@@ -1,0 +1,87 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Package Publishers Roadmap
+:toc:
+:toclevels: 3
+
+== Overview
+
+Package Publishers is a monorepo containing publishing definitions for various package managers and platform stores, making hyperpolymath software accessible across platforms.
+
+== Components
+
+=== homebrew-tap (60% complete)
+
+*Status:* Active maintenance +
+*Purpose:* Homebrew formulas for hyperpolymath packages
+
+*Current features:*
+- Formula definitions for core tools
+- Automated dependency tracking
+- Version pinning
+
+*Planned improvements:*
+- Automated formula generation from releases
+- CI testing on macOS
+- Bottle pre-compilation
+
+=== macports-ports (50% complete)
+
+*Status:* Active maintenance +
+*Purpose:* MacPorts portfiles for hyperpolymath packages
+
+*Current features:*
+- Portfile definitions
+- Dependency management
+- Multi-variant support
+
+*Planned improvements:*
+- Automated portfile updates
+- CI validation
+- Better variant documentation
+
+=== winget-pkgs (40% complete)
+
+*Status:* Active development +
+*Purpose:* Windows Package Manager manifests
+
+*Current features:*
+- Basic manifest structure
+- Version tracking
+
+*Planned improvements:*
+- Complete manifest coverage
+- Automated manifest generation
+- CI validation with winget
+
+== Milestones
+
+=== Phase 1: Automation (Q1 2026)
+- [x] Repository structure
+- [ ] Automated version bump scripts
+- [ ] CI validation for all platforms
+- [ ] Integration with release pipeline
+
+=== Phase 2: Coverage (Q2 2026)
+- [ ] All major hyperpolymath tools published
+- [ ] Documentation for adding new packages
+- [ ] Template generation scripts
+
+=== Phase 3: Advanced Features (Q3 2026)
+- [ ] Automated bottle/binary generation
+- [ ] Multi-architecture support
+- [ ] Release announcement integration
+
+== Dependencies
+
+- Homebrew (for testing formulas)
+- MacPorts (for testing portfiles)
+- WinGet (for testing manifests)
+- Ruby (for scripting)
+
+== Related Projects
+
+- odds-and-sods-package-manager: Unified package manager that may consume these definitions
+
+== Contributing
+
+See link:CONTRIBUTING.md[Contributing Guidelines].
