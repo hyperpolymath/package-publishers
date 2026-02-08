@@ -1,27 +1,77 @@
 = Package Publishers
 // SPDX-License-Identifier: PMPL-1.0-or-later
 
-Publishing definitions for distributing Hyperpolymath tools across package managers and platform stores.
+Publishing definitions for distributing Hyperpolymath tools across package managers and platform stores. A federated packaging hub covering macOS, Linux, and Windows ecosystems.
 
 == Components
 
-* `homebrew-tap/` - Homebrew formulae and casks (macOS/Linux)
-* `macports-ports/` - MacPorts portfiles (macOS)
-* `winget-pkgs/` - Windows Package Manager manifests (Windows)
+=== `homebrew-tap/` — Federated Packaging Hub
 
-== Future
+Contains definitions for multiple package managers:
 
-Potential additions for other distribution channels:
+[cols="2,1,3",options="header"]
+|===
+| Manager | Directory | Packages
 
-* Flatpak manifests
-* Snap packages
-* Nix/Guix package definitions
-* AUR (Arch User Repository) PKGBUILDs
-* Chocolatey packages (Windows)
-* Scoop buckets (Windows)
-* APT/RPM spec files (Linux)
-* Crates.io publishing configs (Rust)
-* Hex.pm publishing configs (Elixir/Erlang)
+| Homebrew (macOS/Linux)
+| `Formula/`
+| affinescript, bunsenite, casket-ssg, czech-file-knife, echidnabot, kith, llm-unify, vext, zigzag-ssg
+
+| AUR (Arch Linux)
+| `aur/`
+| affinescript, bunsenite, bunsenite-bin, casket-ssg, czech-file-knife, echidnabot, kith, llm-unify, vext, zigzag-ssg
+
+| Scoop (Windows)
+| `bucket/`
+| bunsenite, czech-file-knife, echidnabot, llm-unify, vext
+
+| Flatpak
+| `flathub/`
+| Bunsenite, CzechFileKnife
+
+| Nix
+| `nix/`
+| bunsenite, llm-unify, vext (+ flake.nix)
+
+| Snap (Linux)
+| `snap/`
+| bunsenite, llm-unify, vext
+
+| WinGet (Windows)
+| `winget/`
+| Bunsenite, CzechFileKnife, Echidnabot
+|===
+
+=== `macports-ports/` — MacPorts Portfiles
+
+Full MacPorts ports tree structure with 60+ categories mirroring the upstream ports layout.
+
+=== `winget-pkgs/` — Windows Package Manager
+
+Extended WinGet package definitions with manifests, schemas, DevOps pipelines, and tooling.
+
+== Stub / Planned
+
+[cols="1,2",options="header"]
+|===
+| Manager | Status
+
+| APT (Debian/Ubuntu)
+| Stub — `homebrew-tap/apt/` has README only
+
+| RPM (Fedora/RHEL)
+| Stub — `homebrew-tap/rpm/` has README only
+
+| Chocolatey (Windows)
+| Not started
+
+| Guix
+| Not started
+|===
+
+== Related Projects
+
+* https://github.com/hyperpolymath/odds-and-sods-package-manager[odds-and-sods-package-manager] — Unified package manager (OPSM) that consumes these definitions and handles language-level registries (npm, hex, crates, pypi, nimble, idris2, oblibeny, my-lang, julia-the-viper, error-lang)
 
 == License
 
