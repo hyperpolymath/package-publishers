@@ -1,0 +1,46 @@
+PortSystem        1.0
+PortGroup         github 1.0
+
+name              par2
+github.setup      Parchive par2cmdline 1.0.0 v
+revision          0
+description       Parchive: Parity Archive Volume Set for data recovery
+
+long_description  Parchive takes .par files and can regenerate missing data \
+                  based upon a Reed-Soloman Code. This is useful for \
+                  restoring missing pieces of a multi-part archive like the \
+                  kinds used on Usenet. Version 2 does not require \
+                  like-sized pieces, so it is useful for many more kinds of \
+                  data recovery.
+
+license           GPL-2
+categories        archivers
+maintainers       nomaintainer
+
+checksums         rmd160 6e7668840fa5ce1934cfafabc39dee409445c800 \
+                  sha256 b5e2cb6391f1e9e41a92e27791fc27a2138af5da7b7da918d84c2d695037ff6a \
+                  size 3785736
+
+github.tarball_from releases
+
+installs_libs     no
+
+configure.args    --mandir=${prefix}/share/man
+
+test.run          yes
+test.target       check
+
+# macports-clang-3.4 fails
+# macports-clang-3.5 works
+# Assuming > 600 works
+compiler.cxx_standard 2011
+compiler.blacklist-append macports-clang-3.3 macports-clang-3.4 {clang < 600}
+
+post-destroot {
+    set docdir ${prefix}/share/doc/${name}-${version}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 0644 -W ${worksrcpath} AUTHORS COPYING README.md ROADMAP \
+        ${destroot}${docdir}
+}
+
+livecheck.distname  par2cmdline

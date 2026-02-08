@@ -1,0 +1,36 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang  1.0
+PortGroup           github  1.0
+
+go.setup            github.com/numtide/treefmt 2.4.0 v
+go.package          github.com/numtide/treefmt/v2
+go.offline_build    no
+revision            0
+
+homepage            https://treefmt.com/
+
+description         One CLI to format your repo
+
+long_description    \
+    {*}${description}. ${name} applies all the needed formatters to your \
+    project with one command line.
+
+categories          devel
+installs_libs       no
+license             MIT
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           ${distname}${extract.suffix} \
+                    rmd160  c81337a7288cac2080deb770e029f0abe3c7f0dc \
+                    sha256  2b67a03045e8d31c6018d2149438d544c1c9dae7db44510cdd596030a13b38fd \
+                    size    198869
+
+build.args-append   \
+    -ldflags \"-X ${go.package}/build.Version=v${version}\"
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+}

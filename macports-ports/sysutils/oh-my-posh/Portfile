@@ -1,0 +1,45 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/JanDeDobbeleer/oh-my-posh 29.0.2 v
+go.offline_build    no
+revision            0
+
+homepage            https://ohmyposh.dev
+
+description         A prompt theme engine for any shell.
+long_description    {*}${description}
+
+categories          sysutils shells
+installs_libs       no
+license             GPL-3
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    {duck.com:ihj3s1wy @PinoTucana} \
+                    openmaintainer
+
+checksums           rmd160  bb69f76fde3046623d825d52c05cdbddd869a207 \
+                    sha256  4e438be57fb2fe4667e05a0235af5913d73f55a99e9491d29f2c694e5bf0b7b5 \
+                    size    7030162
+
+build.dir           ${worksrcpath}/src
+
+build.pre_args-append \
+    -ldflags \"-X github.com/jandedobbeleer/oh-my-posh/src/build.Version=${version} \
+    -X github.com/jandedobbeleer/oh-my-posh/src/build.Date="2026-01-09"\" -o ${name}
+
+set omp_share_path  ${prefix}/share/${name}
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/src/${name} ${destroot}${prefix}/bin/
+
+    xinstall -d ${destroot}${omp_share_path}
+    file copy ${worksrcpath}/themes ${destroot}${omp_share_path}/
+}
+
+notes "
+  Themes for ${name} can be found in:
+
+    ${omp_share_path}/themes
+"

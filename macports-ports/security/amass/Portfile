@@ -1,0 +1,40 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/owasp-amass/amass 5.0.1 v
+go.offline_build    no
+revision            0
+
+homepage            https://owasp.org/www-project-amass
+
+description         In-depth Attack Surface Mapping and Asset Discovery
+
+long_description    The OWASP Amass Project performs network mapping of \
+                    attack surfaces and external asset discovery using open \
+                    source information gathering and active reconnaissance \
+                    techniques. This includes gathering information from \
+                    APIs, certificates, DNS, routing, web & search scraping, \
+                    web archives, and WHOIS.
+
+categories          security net
+installs_libs       no
+license             Apache-2
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           rmd160  5e2a87fc4d35070e374ac9cbecc761b1834bd4b1 \
+                    sha256  975b23891423a29767d9d83c4d4d501e5ae524288be424b0052e61a9fe8a2869 \
+                    size    277095
+
+depends_build-append \
+                    port:pkgconfig
+
+depends_lib-append  port:libpostal
+
+build.target        ./cmd/${name}
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+}

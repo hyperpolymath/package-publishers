@@ -1,0 +1,41 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+PortGroup           github 1.0
+
+github.setup        scott-griffiths bitstring 4.2.3 bitstring-
+# Change github.tarball_from to 'releases' or 'archive' next update
+github.tarball_from tarball
+name                py-bitstring
+revision            0
+
+categories-append   devel
+supported_archs     noarch
+platforms           {darwin any}
+license             MIT
+maintainers         nomaintainer
+
+description         Module to simplify handling of binary data
+long_description    bitstring is a pure Python module that makes the \
+                    creation, manipulation and analysis of binary data \
+                    as simple and natural as possible.
+
+checksums           rmd160  1975a158384d88dcef14da0071c19db7b39f82bc \
+                    sha256  33cc5014bcce5cfee26cbd82855424b922530cd58a179ca46c9f296d498c59c2 \
+                    size    443138
+
+python.versions     310 311 312 313
+
+if {${name} ne ${subport}} {
+    depends_lib-append \
+                    port:py${python.version}-bitarray
+
+    post-destroot {
+        xinstall -d ${destroot}${prefix}/share/doc/${subport}
+        xinstall -m 0644 -W ${worksrcpath} README.md release_notes.md \
+            LICENSE ${destroot}${prefix}/share/doc/${subport}
+   }
+
+   test.run         yes
+}

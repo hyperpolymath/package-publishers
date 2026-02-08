@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem              1.0
+PortGroup               github 1.0
+
+github.setup            gwtproject gwt 2.12.2
+github.tarball_from     archive
+revision                0
+name                    webtoolkit-java-sdk
+categories              java devel
+license                 Apache-2 BSD Permissive EPL-1 LGPL-2.1+ {NPL-1.1 GPL}
+maintainers             nomaintainer
+platforms               any
+supported_archs         noarch
+
+description             Google Web Toolkit SDK for Java
+
+long_description        Google Web Toolkit (GWT) is a development toolkit for \
+                        building and optimizing complex browser-based applications.
+
+homepage                http://www.gwtproject.org/
+use_zip                 yes
+
+
+checksums               rmd160  32947a36520261c393fc14daf33be7e53d199b0e \
+                        sha256  d2c6843a12ab1d9a6caa4fedd60b028f655d1647c595a0136a70af88e045fdf2 \
+                        size    21395343
+use_configure           no
+
+build                   {}
+
+destroot {
+    # Create the target java directory
+    xinstall -d ${destroot}${prefix}/share/java/${name}
+
+    # Copy over the needed elements of our directory tree
+    copy {*}[glob ${worksrcpath}/*] ${destroot}${prefix}/share/java/${name}
+}

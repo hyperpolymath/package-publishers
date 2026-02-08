@@ -1,0 +1,36 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.28 5.30 5.32 5.34
+perl5.setup         GnuPG-Interface 1.05
+revision            0
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         GnuPG::Interface - Perl interface to GnuPG
+long_description    {*}${description}
+
+platforms           {darwin any}
+supported_archs     noarch
+
+checksums           rmd160  3e4ea2f25fbde3478cdfa5fa600f7d39306c7fd9 \
+                    sha256  54435dfda4fbb689329420b1355166105ee178040d863aa3e059eca085cae045 \
+                    size    77449
+
+if {${perl5.major} != ""} {
+    depends_lib-append \
+                    path:bin/gpg:gnupg2 \
+                    port:p${perl5.major}-math-bigint \
+                    port:p${perl5.major}-moo \
+                    port:p${perl5.major}-moox-handlesvia \
+                    port:p${perl5.major}-moox-late \
+                    port:p${perl5.major}-scalar-list-utils
+
+    patchfiles      fix_taint_mode.patch \
+
+    post-patch {
+        reinplace "s|@@PREFIX@@|${prefix}|"  \
+            ${worksrcpath}/lib/GnuPG/Interface.pm
+    }
+}

@@ -1,0 +1,106 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           java 1.0
+
+name                gradle
+version             9.2.1
+revision            0
+categories          devel java groovy
+license             Apache-2
+maintainers         {amake @amake} openmaintainer
+
+description         An open-source build system that is based on the Groovy language
+long_description    Gradle is a build system which offers you ease, power and freedom. \
+                    You can choose the balance for yourself. It has powerful multi-project build \
+                    support. It has a layer on top of Ivy that provides a build-by-convention \
+                    integration for Ivy. It gives you always the choice between the flexibility \
+                    of Ant and the convenience of a build-by-convention behavior.
+
+homepage            https://gradle.org/
+platforms           {darwin any}
+supported_archs     noarch
+distname            ${name}-${version}-bin
+master_sites        https://services.gradle.org/distributions
+conflicts           ${name}8
+
+# Update checksums for variant when updating these!
+checksums           rmd160  dfada6afd8b95b8d37188fcd6228c1a133f4b12f \
+                    sha256  72f44c9f8ebcb1af43838f45ee5c4aa9c5444898b3468ab3f4af7b6076c5bc3f \
+                    size    135535598
+
+worksrcdir          ${name}-${version}
+
+use_zip             yes
+use_configure       no
+
+if {${subport} eq ${name}} {
+    java.version    17+
+    java.fallback   openjdk17
+}
+
+build {}
+
+pre-destroot {
+    # Remove extraneous bat files
+    delete {*}[glob ${worksrcpath}/bin/*.bat]
+}
+
+destroot {
+    # Create the target java directory
+    xinstall -m 0755 -d ${destroot}${prefix}/share/java/${name}
+
+    # Copy over the needed elements of our directory tree
+    copy ${worksrcpath}/bin \
+        ${worksrcpath}/lib \
+        ${worksrcpath}/LICENSE \
+        ${worksrcpath}/NOTICE \
+        ${worksrcpath}/README \
+        ${destroot}${prefix}/share/java/${name}
+
+    # Symlink gradle into the bin directory
+    ln -s ${prefix}/share/java/${name}/bin/gradle ${destroot}${prefix}/bin
+}
+
+if {${subport} eq ${name}} {
+    variant all description {Install supplemental documentation and source code} {
+        distname    ${name}-${version}-all
+
+        checksums   rmd160  689a1dfdd448ba7a255ae387ef5041fe4abd9357 \
+                    sha256  f86344275d1b194688dd330abf9f6f2344cd02872ffee035f2d1ea2fd60cf7f3 \
+                    size    233819119
+
+        post-destroot {
+            xinstall -m 0755 -d ${destroot}${prefix}/share/doc/${name}
+            copy ${worksrcpath}/src \
+                ${worksrcpath}/docs \
+                ${destroot}${prefix}/share/doc/${name}
+        }
+    }
+}
+
+livecheck.type  regex
+livecheck.url   ${master_sites}
+livecheck.regex ${name}-(\\d+\\.\\d+(\\.\\d+)?)-all\\.zip
+
+subport ${name}8 {
+    version         8.14.3
+
+    description-append\
+                    (version 8 for compatibility with older projects)
+
+    conflicts       ${name}
+
+    java.version    1.8+
+    java.fallback   openjdk8
+
+    checksums       rmd160  a933fdefa4f255db5b7a14f8e53ba7ae8cc311d5 \
+                    sha256  bd71102213493060956ec229d946beee57158dbd89d0e62b91bca0fa2c5f3531 \
+                    size    137393837
+
+    livecheck.type  none
+}
+
+notes {
+  For Bash and Zsh completion support, install port 'gradle-completion'.
+}

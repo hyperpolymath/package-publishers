@@ -1,0 +1,31 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           npm 1.0
+
+name                gemini-cli
+version             0.24.0
+revision            0
+
+categories          llm
+platforms           any
+maintainers         {breun @breun} openmaintainer
+license             Apache-2
+supported_archs     noarch
+
+description         Use Google Gemini from your terminal
+long_description    Gemini CLI is an open-source AI agent that brings the power of Google Gemini directly into your terminal.
+
+homepage            https://geminicli.com
+
+npm.rootname        @google/${name}
+distname            ${name}-${version}
+
+checksums           rmd160  9d8e91240b67ebeecdb67abf3f67c59267f8a308 \
+                    sha256  10908307b711b7dac287b07ce54093dac02d7446f9d357f83da2c24778cefde8 \
+                    size    1662038
+
+test.run    yes
+test.cmd    gemini
+test.target
+test.args   --version

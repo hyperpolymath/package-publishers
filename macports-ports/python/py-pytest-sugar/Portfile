@@ -1,0 +1,46 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-pytest-sugar
+version             1.0.0
+revision            0
+
+categories-append   devel
+platforms           {darwin any}
+supported_archs     noarch
+license             BSD
+maintainers         nomaintainer
+
+description         ${name} changes the default look and feel of pytest \
+                    (progressbar, show tests that fail instantly).
+
+long_description    {*}${description}
+
+homepage            http://pivotfinland.com/pytest-sugar/
+
+checksums           rmd160  38b7f6b23079f5856a0d844542211286d030d0df \
+                    sha256  6422e83258f5b0c04ce7c632176c7732cab5fdb909cb39cca5c9139f81276c0a \
+                    size    14992
+
+python.versions     310 311 312 313
+
+if {${name} ne ${subport}} {
+    depends_run-append \
+                    port:py${python.version}-pytest
+
+    depends_lib-append \
+                    port:py${python.version}-termcolor
+
+    post-destroot {
+        xinstall -d ${destroot}${prefix}/share/doc/${subport}
+        xinstall -m 0644 -W ${worksrcpath} LICENSE README.md \
+                    ${destroot}${prefix}/share/doc/${subport}
+    }
+
+    test.run        yes
+    python.test_framework
+    test.cmd        ${python.bin}
+    test.target     test_sugar.py
+}

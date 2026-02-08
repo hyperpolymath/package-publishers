@@ -1,0 +1,23 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+PortGroup           select 1.0
+
+perl5.branches      5.28 5.30 5.32 5.34
+perl5.setup         App-cpanminus 1.7048 ../../authors/id/M/MI/MIYAGAWA
+revision            0
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         App::cpanminus - get, unpack, build and install modules from CPAN
+long_description    {*}${description}
+
+platforms           {darwin any}
+supported_archs     noarch
+
+checksums           rmd160  56ad4debbbb34a0eb6298d5089a13213946e9b52 \
+                    sha256  59b60907ab9fa4f72ca2004fbe6054911439ae9a906890b4d842a87b25f20f3c \
+                    size    316512
+
+select.group        cpanm
+select.file         ${filespath}/cpanm-${perl5.major}

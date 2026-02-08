@@ -1,0 +1,64 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           java 1.0
+PortGroup           app 1.0
+
+github.setup        NationalSecurityAgency ghidra 12.0 Ghidra_ _build
+github.tarball_from archive
+checksums           rmd160  65dbc2d15229e45de206d006f21f19f28f8efa41 \
+                    sha256  32742f938c9225137ae0a22cc00307f81a396bcbd661626ac3177a3628920648 \
+                    size    78508855
+
+categories          devel
+license             Apache
+maintainers         {1e0.co.uk:dev @hexagonal-sun} {crowell.biz:jeff @crowell} openmaintainer
+description         A software reverse engineering (SRE) suite of tools developed by NSA's \
+                    Research Directorate in support of the Cybersecurity mission
+long_description    {*}${description}
+homepage            https://ghidra-sre.org/
+
+java.version        21
+java.fallback       openjdk21
+
+universal_variant   no
+depends_build-append    port:gradle port:py313-pip port:python313
+depends_run-append      port:python313
+
+set javadest        ${prefix}/share/java/${name}-${version}
+configure.env-append    GRADLE_USER_HOME=${worksrcpath}
+configure.pre_args  ""
+configure.cmd       gradle -I gradle/support/fetchDependencies.gradle
+build.env-append    GRADLE_USER_HOME=${worksrcpath}
+build.env-append    _JAVA_OPTIONS=-Duser.home=${worksrcpath}
+build.cmd           gradle
+build.target        buildGhidra
+
+patchfiles          launch.properties.diff
+
+set ghidra_copy_list \
+[list \
+    Extensions \
+    GPL \
+    Ghidra \
+    LICENSE \
+    docs \
+    ghidraRun \
+    licenses \
+    server \
+    support \
+]
+
+destroot {
+    system "unzip ${worksrcpath}/build/dist/ghidra*.zip -d ${worksrcpath}/ghbuild"
+    xinstall -d ${destroot}${javadest}
+    foreach item ${ghidra_copy_list} {
+        copy ${worksrcpath}/ghbuild/ghidra_${version}_DEV/${item} ${destroot}${javadest}/
+    }
+}
+
+# app settings
+app.executable      ${javadest}/ghidraRun
+app.icon            ${worksrcpath}/Ghidra/RuntimeScripts/Windows/support/ghidra.ico
+app.retina          yes

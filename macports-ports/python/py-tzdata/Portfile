@@ -1,0 +1,23 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-tzdata
+version             2025.3
+revision            0
+
+license             Apache-2
+maintainers         {mps @Schamschula} openmaintainer
+description         tzdata: Python package providing IANA time zone data
+long_description    {*}${description}
+homepage            https://github.com/python/tzdata
+
+supported_archs     noarch
+platforms           {darwin any}
+
+checksums           rmd160  dcd62302bda1a802795e93cb23c277131b42df80 \
+                    sha256  de39c2ca5dc7b0344f2eba86f49d614019d29f060fc4ebc8a417896a620b56a7 \
+                    size    196772
+
+python.versions     310 311 312 313 314

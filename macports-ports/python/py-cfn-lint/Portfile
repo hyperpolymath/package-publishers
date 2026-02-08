@@ -1,0 +1,51 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+PortGroup           github 1.0
+
+name                py-cfn-lint
+github.setup        aws-cloudformation cfn-python-lint 1.43.1 v
+github.tarball_from archive
+revision            0
+
+platforms           {darwin any}
+supported_archs     noarch
+license             MIT
+maintainers         {judaew @judaew} openmaintainer
+
+description         Checks cloudformation for practices and behaviour that \
+                    could potentially be improved
+long_description    {*}${description}
+
+checksums           sha256  f535174920a6513b49f11de212ad73edbe33fd68bbcc92a1f1ceb068cd397ee7 \
+                    rmd160  07c7689e44eebf1f770a2094ef4891e1d57f6b89 \
+                    size    3771890
+
+python.versions     310 311 312 313 314
+
+if {${name} ne ${subport}} {
+    post-patch {
+        reinplace "s|\'cfn-lint\'|\'cfn-lint-${python.branch}\'|g" \
+            ${worksrcpath}/test/integration/__init__.py
+    }
+
+    depends_run-append \
+                    port:py${python.version}-yaml \
+                    port:py${python.version}-aws-sam-translator \
+                    port:py${python.version}-jsonpatch \
+                    port:py${python.version}-jsonschema \
+                    port:py${python.version}-networkx \
+                    port:py${python.version}-junit-xml \
+                    port:py${python.version}-jschema_to_python \
+                    port:py${python.version}-sarif-om \
+                    port:py${python.version}-sympy \
+                    port:py${python.version}-regex
+
+    depends_test-append \
+                    port:py${python.version}-mock
+
+    test.run        yes
+}
+
+github.livecheck.regex  {([0-9.]+)}

@@ -1,0 +1,19 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.28 5.30 5.32 5.34
+perl5.setup         Perl-Tidy 20260109 ../../authors/id/S/SH/SHANCOCK
+revision            0
+license             GPL-2+
+maintainers         nomaintainer
+description         Perl::Tidy - Parses and beautifies perl source
+long_description    {*}${description}
+
+platforms           {darwin any}
+supported_archs     noarch
+
+checksums           rmd160  07a731f34a83d6bf316262f67ec40922f13b3491 \
+                    sha256  76404514505ba0c768a394d4f28ea0691c8899b049258aa545b7042265e14811 \
+                    size    1231052

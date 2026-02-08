@@ -1,0 +1,36 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-pytest-regressions
+python.rootname     pytest_regressions
+version             2.8.3
+revision            0
+
+categories-append   devel
+supported_archs     noarch
+platforms           {darwin any}
+license             MIT
+maintainers         {judaew @judaew} openmaintainer
+
+description         Fixtures to write regression tests.
+long_description    {*}${description}
+
+homepage            https://github.com/ESSS/pytest-regressions
+
+checksums           rmd160  75e119a54cdb336d58a17ffab106ecae37b2ce75 \
+                    sha256  1ad90708bee02a3d36c78ef0b6f9692a9a30d312dd828680fd6d2a7235fcd221 \
+                    size    117168
+
+python.versions     310 311 312 313
+
+if {${name} ne ${subport}} {
+    depends_build-append \
+                    port:py${python.version}-setuptools_scm
+
+    depends_run-append \
+                    port:py${python.version}-pytest \
+                    port:py${python.version}-pytest-datadir \
+                    port:py${python.version}-yaml
+}

@@ -1,0 +1,62 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-blosc2
+version             3.11.1
+
+categories-append   archivers devel
+maintainers         nomaintainer
+license             BSD
+
+python.versions     310 311 312 313
+
+description         Python wrapper for Blosc2
+
+long_description    A Python wrapper for the extremely fast Blosc2 \
+                    compression library
+
+homepage            https://pypi.python.org/pypi/blosc2/
+
+checksums           md5 22ce734b00c26d5d43237aebbdbfa7eb \
+                    rmd160 f156004384e14a2de51cd10fa63dbaf5cbd23deb \
+                    sha256 63383f544928e8c6c259b721fab04da0bc21e84df5ab821ea7c68a8bb01b55a8
+
+# uses cmake via scikit-build-core
+python.pep517_backend
+
+if {$subport ne $name} {
+    depends_build-append \
+                        port:py${python.version}-scikit-build-core \
+                        port:py${python.version}-cython \
+                        port:py${python.version}-oldest-supported-numpy \
+                        path:bin/pkg-config:pkgconfig
+
+    depends_lib-append  port:blosc2 \
+                        port:py${python.version}-cpuinfo \
+                        port:py${python.version}-msgpack \
+                        port:py${python.version}-ndindex \
+                        port:py${python.version}-numexpr \
+                        port:py${python.version}-numpy \
+                        port:py${python.version}-platformdirs \
+                        port:py${python.version}-requests
+    
+    build.args-append   -Cbuild.verbose=true
+    build.env-append    USE_SYSTEM_BLOSC2=1
+
+    pre-build {
+        build.env-append    ARCHFLAGS=[get_canonical_archflags cc]
+    }
+
+    test.run            yes
+    test.cmd            ${python.bin} -m pytest
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -m 755 -d ${destroot}${docdir}
+        xinstall -m 644 -W ${worksrcpath} LICENSE.txt README.rst \
+            RELEASE_NOTES.md \
+            ${destroot}${docdir}
+    }
+}

@@ -1,0 +1,20 @@
+# Created with YamlCreate.ps1 Dumplings Mod
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.12.0.schema.json
+
+PackageIdentifier: Servo.Servo.Nightly
+PackageVersion: "1.0"
+InstallerType: burn
+Scope: machine
+Protocols:
+- http
+- https
+ProductCode: '{814a4749-3cbe-4107-b5b4-4dd98a96d910}'
+ReleaseDate: 2026-01-16
+AppsAndFeaturesEntries:
+- DisplayName: Servo
+Installers:
+- Architecture: x64
+  InstallerUrl: https://github.com/servo/servo-nightly-builds/releases/download/2026-01-16/servo-x86_64-windows-msvc.exe
+  InstallerSha256: 2FDC83058C79981AF71C8FB54E87CFD5CB5A4F504EEBFD80B6033B4DF1CDB148
+ManifestType: installer
+ManifestVersion: 1.12.0

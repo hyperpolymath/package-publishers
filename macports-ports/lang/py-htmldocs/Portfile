@@ -1,0 +1,103 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+python.add_dependencies no
+name                py-htmldocs
+python.versions     27 310 311 312 313 314
+version             1.0
+revision            0
+license             PSF
+
+if {$subport != $name} {
+    if {${python.version} == 27} { version 2.7.18 }
+    if {${python.version} == 310} { version 3.10.19 }
+    if {${python.version} == 311} { version 3.11.14 }
+    if {${python.version} == 312} { version 3.12.12 }
+    if {${python.version} == 313} { version 3.13.9 }
+    if {${python.version} == 314} { version 3.14.2 }
+}
+
+categories          lang
+platforms           any
+maintainers         {eborisch @eborisch} \
+                    openmaintainer
+supported_archs     noarch
+installs_libs       no
+
+use_bzip2           yes
+use_configure       no
+
+description         Local HTML documentation for Python.
+long_description    {*}${description}
+homepage            https://www.python.org/
+master_sites        https://www.python.org/ftp/python/doc/
+archive_sites
+
+# No need to use BW from mirrors to download these; truly just an extract & mv
+archive_sites
+
+if {${name} != ${subport}} {
+    description         HTML documentation for Python ${version}
+    long_description    Access Python ${version} HTML docs via \
+        file://${prefix}/share/doc/python${python.version}-doc/index.html
+
+    master_sites        https://www.python.org/ftp/python/doc/${version}
+    distname            python-${version}-docs-html
+    set extractname     ${distname}
+    notes               ${long_description}
+
+    if {${python.version} == 27} {
+      checksums \
+        rmd160  10120f30975fc9a4ee4f998fcffe764b5090172f \
+        sha256  20445e9a571cacdd350f702f0980e4dc559b6ff81f1d69affe9b0a862fef2f0e \
+        size    4634932
+    }
+
+    if {${python.version} == 310} {
+        checksums   rmd160  17b69da150c596fe8a82bcddcc85ab9119282a76 \
+                    sha256  fd4f81b300fee7254897acc1a4a8452c6ae1fc087845cc327db173373c527830 \
+                    size    7453972
+    }
+
+    if {${python.version} == 311} {
+        checksums   rmd160  d05e5cffdb1d48483ad8bb8e0c6abb988d15715b \
+                    sha256  706bc8613eccdc76424d7a590adf36793623f7bfbf480260812a581a575cbae8 \
+                    size    8011943
+    }
+
+    if {${python.version} == 312} {
+        checksums   rmd160  2152f17e99501e91bcdee6a49f6b8e9dd0739287 \
+                    sha256  93d20d849a8931c2e9e1fd1b0d32646c154b867751ca4080c905c810815a4fa9 \
+                    size    8444609
+    }
+
+    if {${python.version} == 313} {
+        checksums   rmd160  d0b3deed595b553fc51a04f41c323e00caffb767 \
+                    sha256  0db85437c2de31a8ee7e5f02a7ba90ed6e10ba90ba265cbd783a1818de432e40 \
+                    size    10368030
+    }
+
+    if {${python.version} == 314} {
+        checksums   rmd160  199e591b8cd7164583010a238968a6b5b4b60dd4 \
+                    sha256  d72a50b427913492be4c8eacfa66618096be9163bf27b97a651fd96bfec4df3d \
+                    size    10777500
+    }
+
+    build {}
+
+    destroot {
+        set  destdocdir \
+            ${destroot}${prefix}/share/doc/python${python.version}-doc
+        file mkdir ${destroot}${prefix}/share/doc
+        file copy ${workpath}/${extractname} ${destdocdir}
+        system "chmod -R a+rX ${destdocdir}"
+    }
+
+    livecheck.url       https://www.python.org/ftp/python/doc/
+    livecheck.type      regex
+    livecheck.regex     ([string map {. \\.} ${python.branch}.\[0-9ap\]+])
+} else {
+    livecheck.type      none
+}

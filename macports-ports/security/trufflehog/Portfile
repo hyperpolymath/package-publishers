@@ -1,0 +1,36 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/trufflesecurity/trufflehog 3.92.4 v
+go.package          github.com/trufflesecurity/trufflehog/v3
+go.offline_build    no
+revision            0
+
+description         Find credentials all over the place
+
+long_description    \
+    ${name} scans for credentials in Github & Gitlab repositories, \
+    filesystems, and S3 buckets.  It utilizes 700 credential detectors that \
+    support active verification against their respective APIs.
+
+categories          security
+installs_libs       no
+license             AGPL-3
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+build.args-append \
+    -ldflags \" -X ${go.package}/pkg/version.BuildVersion=${version} \"
+
+checksums           rmd160  e30890b765d331da8dfa713dc11d3908c626d580 \
+                    sha256  c99089ee4a0a91155a4fa4c585a95f897492f3580edeb4df2379a2c1695a4f50 \
+                    size    4140793
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+}
+
+github.livecheck.regex \
+                    {([0-9.]+)}

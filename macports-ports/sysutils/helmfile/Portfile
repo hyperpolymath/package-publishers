@@ -1,0 +1,42 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/helmfile/helmfile 1.2.3 v
+go.offline_build    no
+revision            0
+
+homepage            https://helmfile.readthedocs.io
+
+description         Deploy Kubernetes Helm Charts
+
+long_description    Helmfile is a declarative spec for deploying helm charts. \
+                    It lets you keep a directory of chart value files and \
+                    maintain changes in version control, apply CI/CD to \
+                    configuration changes, periodically sync to avoid skew in \
+                    environments.
+
+categories          sysutils
+installs_libs       no
+license             MIT
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+build.cmd           make
+build.pre_args-append \
+                    TAG=v${version}
+build.args          build
+
+checksums           rmd160  93182d5c3066a13f6caab985f2b28ac86d9bc23b \
+                    sha256  cf9b4e96830c8562a6b0436e102d2117d8b2cbd9b7dbe308e6a6d032ed7e7a1d \
+                    size    1112536
+
+use_parallel_build  no
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+}
+
+github.livecheck.regex \
+                    {([0-9.]+)}

@@ -1,0 +1,60 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/smallstep/cli 0.28.7 v
+go.offline_build    no
+name                step-cli
+revision            0
+
+description         A zero trust swiss army knife for working with X509, \
+                    OAuth, JWT, OATH OTP, etc.
+
+long_description    step is a toolkit for working with your public key \
+                    infrastructure (PKI). It's also the client counterpart \
+                    to the step-ca online Certificate Authority (CA).
+
+categories          security
+installs_libs       no
+license             Apache-2
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+# Mirrors already have a tarball named cli-${version}.  Since the tarball
+# is versioned, then we don't have to version our dist_subdir. We need only
+# create one with the project name just to differentiate from the tarball
+# already present.
+dist_subdir         ${name}
+
+checksums           rmd160  3de8941c8d0ab11baed37645dca79990eb043ae9 \
+                    sha256  6d70f8d7bf337ef7c82cb7e0d4e2a7ed22d1bc1ff575bc8cd9e8c6195eaeae1e \
+                    size    1649620
+
+build.cmd           make
+build.target        binary-${goos}-${goarch}
+
+destroot {
+    set bin_path ${destroot}${prefix}/bin/step
+
+    # Install executable
+    xinstall -m 0755 \
+        ${worksrcpath}/output/binary/${goos}-${goarch}/step \
+        ${destroot}${prefix}/bin/
+
+    # Install shell completions
+    set bash_completion ${destroot}${prefix}/share/bash-completion/completions
+    xinstall -d ${bash_completion}
+    system "${bin_path} completion bash > ${bash_completion}/step"
+
+    set zsh_completion ${destroot}${prefix}/share/zsh/site-functions
+    xinstall -d ${zsh_completion}
+    system "${bin_path} completion zsh > ${zsh_completion}/_step"
+
+    set fish_completion ${destroot}${prefix}/share/fish/vendor_completions.d
+    xinstall -d ${fish_completion}
+    system "${bin_path} completion fish > ${fish_completion}/step.fish"
+}
+
+github.livecheck.regex \
+                    {([0-9.]+)}

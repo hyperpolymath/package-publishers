@@ -1,0 +1,35 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/scaleway/scaleway-cli 2.49.0 v
+go.offline_build    no
+revision            0
+name                scw
+
+homepage            https://www.scaleway.com/en/cli/
+
+categories          net
+installs_libs       no
+license             Apache-2
+maintainers         {gmail.com:davidriod @dgsb} \
+                    {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+description         Command Line Interface for Scaleway
+
+long_description    Scaleway CLI is a tool to help you pilot your Scaleway \
+                    infrastructure directly from your terminal.
+
+checksums           rmd160  46140523d858afcdc303b8ae4dfe0db1c8efba6c \
+                    sha256  9001e8bc0c6a7cf4359d8066b3845a6d9a03e212ccc5af5840fccb06ca30fa97 \
+                    size    3842187
+
+build.pre_args-append \
+    -ldflags \" -X main.Version=${github.tag_prefix}${version} \"
+build.args          ./cmd/scw
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/${name}
+}

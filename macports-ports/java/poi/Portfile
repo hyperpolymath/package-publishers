@@ -1,0 +1,54 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+
+name                poi
+version             5.2.3
+categories          java
+platforms           any
+maintainers         nomaintainer
+supported_archs     noarch
+license             LGPL-2.1
+
+description         Apache POI - the Java API for Microsoft Documents
+
+long_description    The Apache POI Project's mission is to create and maintain Java APIs for manipulating \
+                    various file formats based upon the Office Open XML standards (OOXML) \
+                    and Microsoft's OLE 2 Compound Document format (OLE2).
+
+homepage            https://poi.apache.org/
+master_sites        https://archive.apache.org/dist/poi/release/bin/
+distname            poi-bin-5.2.3-20220909
+worksrcdir          ${name}-bin-${version}
+
+checksums           sha1    ce0d63e14db3f4ab01c0c83ad227738e6eb52d41 \
+                    rmd160  e633e262bdaed93afb4323f29b5436cd4d637f2a \
+                    sha256  970e0273a342ce55ab94c06a265b8999c719248b7d41da729b7f30725d3fe2a0 \
+                    size    61001071
+
+use_zip             yes
+use_configure       no
+
+build {}
+
+destroot {
+    # Ensure needed directories
+    xinstall -m 755 -d ${destroot}${prefix}/share/java \
+        ${destroot}${prefix}/share/java/${name}
+
+    # Install the required libs
+    file copy ${worksrcpath}/lib \
+        ${destroot}${prefix}/share/java/${name}
+    file copy ${worksrcpath}/ooxml-lib \
+        ${destroot}${prefix}/share/java/${name}
+    file copy ${worksrcpath}/auxiliary \
+        ${destroot}${prefix}/share/java/${name}
+
+    # Install poi
+    file copy {*}[glob ${worksrcpath}/*.jar] \
+        ${destroot}${prefix}/share/java/${name}
+}
+
+livecheck.type  regex
+livecheck.url   https://poi.apache.org/download.html
+livecheck.regex {The latest stable release is Apache POI (\d+\.\d+)}

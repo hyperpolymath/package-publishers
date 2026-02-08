@@ -1,0 +1,36 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/turbot/steampipe 2.3.4 v
+go.offline_build    no
+revision            0
+
+homepage            https://steampipe.io
+
+description         \
+    Use SQL to instantly query your cloud services (AWS, Azure, GCP and more).
+
+long_description    \
+    Steampipe is the universal interface to APIs. Use SQL to query cloud \
+    infrastructure, SaaS, code, logs, and more.
+
+categories          net sysutils
+installs_libs       no
+license             AGPL-3
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           rmd160  883e513db8fc21fa51a0e6d9124ea8b67c7b3d66 \
+                    sha256  59fa1f050feed5228f9e4b70098820bc0581f9e030e72a7d5798663b7ff95c0f \
+                    size    580468
+
+build.args          -ldflags '-X main.version=${version}'
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+}
+
+github.livecheck.regex \
+                    {([0-9.]+)}

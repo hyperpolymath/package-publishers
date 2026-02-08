@@ -1,0 +1,34 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.28 5.30 5.32 5.34
+perl5.setup         Mouse v2.6.1 ../../authors/id/S/SK/SKAJI
+revision            0
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         Mouse - Moose minus the antlers
+long_description    {*}${description}
+
+checksums           rmd160  feaebcd7edf8e8e170396b6ac2d0ce13316b4df1 \
+                    sha256  aacfba1bfc6f9f89d8ecb26dab8694f256afe44eb675068318759698bb47e29a \
+                    size    220238
+
+if {${perl5.major} != ""} {
+    depends_build-append \
+                    port:p${perl5.major}-declare-constraints-simple \
+                    port:p${perl5.major}-devel-ppport \
+                    port:p${perl5.major}-io-string \
+                    port:p${perl5.major}-module-build-xsutil \
+                    port:p${perl5.major}-path-class \
+                    port:p${perl5.major}-test-exception \
+                    port:p${perl5.major}-test-deep \
+                    port:p${perl5.major}-test-fatal \
+                    port:p${perl5.major}-test-leaktrace \
+                    port:p${perl5.major}-test-output \
+                    port:p${perl5.major}-test-requires \
+                    port:p${perl5.major}-try-tiny
+    
+    perl5.use_module_build
+}

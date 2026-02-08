@@ -1,0 +1,55 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-pdfminer
+version             20240706
+revision            0
+
+python.versions     310 311 312 313
+
+platforms           {darwin any}
+supported_archs     noarch
+license             MIT
+maintainers         {eborisch @eborisch} \
+                    openmaintainer
+homepage            https://pdfminersix.readthedocs.io/
+description         Python pdf extraction package
+
+long_description    \
+                    Pdfminer.six is a community maintained fork of the \
+                    original PDFMiner. It is a tool for extracting \
+                    information from PDF documents. It focuses on getting \
+                    and analyzing text data. Pdfminer.six extracts the text \
+                    from a page directly from the sourcecode of the PDF. It \
+                    can also be used to get the exact location, font or \
+                    color of the text.  It is built in a modular way such \
+                    that each component of pdfminer.six can be replaced \
+                    easily. You can implement your own interpreter or \
+                    rendering device to use the power of pdfminer.six for \
+                    other purposes that text analysis.
+
+python.rootname     pdfminer.six
+checksums           rmd160  fbd073cf29bb17bf4272a72b166266716ec8870a \
+                    sha256  c631a46d5da957a9ffe4460c5dce21e8431dabb615fee5f9f4400603a58d95a6 \
+                    size    7363505
+
+if {${name} ne ${subport}} {
+    depends_lib port:py${python.version}-charset-normalizer \
+                port:py${python.version}-cryptography \
+                port:py${python.version}-setuptools-git-versioning
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} \
+            LICENSE \
+            cmaprsrc/README.txt \
+            README.md \
+            ${destroot}${docdir}
+    }
+
+    notes-append    "To enable image support in $subport, you can\
+                    install py${python.version}-Pillow."
+}

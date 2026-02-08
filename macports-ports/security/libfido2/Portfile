@@ -1,0 +1,62 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           cmake 1.1
+PortGroup           openssl 1.0
+PortGroup           legacysupport 1.1
+
+# clock_gettime
+legacysupport.newest_darwin_requires_legacy 15
+
+# next release download from https://developers.yubico.com/libfido2/Releases/
+github.setup        Yubico libfido2 1.16.0
+github.tarball_from tarball
+revision            2
+
+categories          security crypto
+maintainers         {@trodemaster icloud.com:manuals-unread2u} openmaintainer
+
+license             bsd
+description         library to communicate with a FIDO device over USB
+long_description    provides library functionality and command-line tools to communicate with a FIDO device over USB, and to verify attestation and assertion signatures.
+
+checksums           rmd160  4adb73f4f695393b92ab32d541f0a9980b2c2586 \
+                    sha256  c9795fff9183eaf111114e8619ff79a4aea9aeac2ddc5935616b1e32dd60e3b2 \
+                    size    682408
+
+depends_build-append \
+                    port:mandoc \
+                    port:pkgconfig
+
+depends_lib-append  port:libcbor
+
+platform darwin {
+    if {${os.major} < 16} {
+        patchfiles-append \
+                    patch-hid_osx.diff
+    }
+    if {[string match *gcc* ${configure.compiler}]} {
+        patchfiles-append \
+                    patch-apple-gcc.diff
+    }
+    if {${build_arch} in [list ppc ppc64]} {
+        patchfiles-append \
+                    patch-werror.diff
+    }
+}
+
+compiler.thread_local_storage yes
+
+configure.args-append \
+                    -DBUILD_EXAMPLES=OFF \
+                    -DBUILD_SHARED_LIBS=ON \
+                    -DBUILD_STATIC_LIBS=ON \
+                    -DBUILD_TESTS=ON \
+                    -DBUILD_TOOLS=ON \
+                    -DUSE_HIDAPI=OFF
+
+test.run            yes
+# We want tests use the newly-built lib and not the one that may be installed in the prefix.
+# Otherwise some tests may fail with missing symbols.
+test.env-append     DYLD_LIBRARY_PATH=${cmake.build_dir}/src

@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-fontutils
+version             74240
+revision            0
+
+categories          tex
+maintainers         {dports @drkp}
+license             Copyleft Permissive
+description         TeX Live: Graphics and font utilities
+long_description    Programs for conversion between font formats, testing fonts, virtual fonts, .gf and .pk manipulation, mft, fontinst, etc. Manipulating OpenType, TrueType, Type 1,and for manipulation of PostScript and other image formats.
+
+checksums           texlive-fontutils-74240-run.tar.xz \
+                    rmd160  6f9526cad60de94c52b9453a036cf6c6ad535b16 \
+                    sha256  e84afdac846c62dc7a9f2f742f5fe28b34c6b9fadc0b7994da24f5bbc95d61e8 \
+                    size    5332084 \
+                    texlive-fontutils-74240-doc.tar.xz \
+                    rmd160  97bc669f1b63c55105abf53069f9ace7b7b01764 \
+                    sha256  e2fc91eb7fdd9aba6c47c2a5be80a27ef13092fae51a2066f631dc66e5f0c9d1 \
+                    size    1969108 \
+                    texlive-fontutils-74240-src.tar.xz \
+                    rmd160  bc8da14446826524a36f6c3e7d9013d90e985f39 \
+                    sha256  7377d9ec56be4869fbcd9d0c814cd335304e4f3b1f07af3f261fc4a4625efb84 \
+                    size    674744
+
+depends_lib         port:texlive-basic
+
+texlive.binaries    afm2afm afm2pl albatross autoinst dosepsbin epstopdf fontinst luafindfont mag mf2pt1 mkt1font ot2kpx pfb2pfa pk2bm pltotf ps2pk repstopdf tftopl ttf2afm ttf2pk ttf2tfm ttfdump vftovp vpl2ovp vpl2vpl vptovf
+
+depends_run-append  port:lcdf-typetools \
+                    port:ps2eps \
+                    port:psutils \
+                    port:t1utils
+
+texlive.texmfport

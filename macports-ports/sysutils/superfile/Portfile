@@ -1,0 +1,27 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/yorukot/superfile 1.4.0 v
+go.offline_build    no
+revision            0
+
+description         Pretty fancy and modern terminal file manager
+long_description    {*}${description}
+
+categories          sysutils
+installs_libs       no
+license             MIT
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           rmd160  ba17ab9fe02e4bd0335bd567ae1807548c68e974 \
+                    sha256  aa3ad00b3b89023c413a47f4f518f419d37ed3646eac3e9cfaf53d31e5dee82e \
+                    size    16293086
+
+build.args-append   -o ./spf
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/spf ${destroot}${prefix}/bin/
+}

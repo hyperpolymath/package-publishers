@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-parfive
+version             2.2.0
+revision            0
+categories-append   net
+license             MIT
+maintainers         {mps @Schamschula} openmaintainer
+description         A parallel file downloader using asyncio.
+long_description    {*}${description} parfive can handle downloading multiple files in \
+                    parallel as well as downloading each file in a number of chunks.
+homepage            https://parfive.readthedocs.io/en/stable/
+
+supported_archs     noarch
+platforms           {darwin any}
+
+python.versions     310 311 312 313
+
+checksums           rmd160  37624883870f8448e9309bbe1cbaad398e7e930a \
+                    sha256  de07d148d898e3f8ad6d6514e1d28e13f51d80de153fa1918c346509a5002e9b \
+                    size    40007
+
+if {${name} ne ${subport}} {
+    depends_build-append \
+                    port:py${python.version}-setuptools_scm
+
+    depends_lib-append \
+                    port:py${python.version}-aiohttp \
+                    port:py${python.version}-tqdm
+}
+
+variant ftp description {Add ftp functionality} {
+    depends_lib-append \
+                    port:py${python.version}-aioftp
+}

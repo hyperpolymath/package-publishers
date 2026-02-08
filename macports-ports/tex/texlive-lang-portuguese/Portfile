@@ -1,0 +1,35 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           texlive 1.0
+
+name                texlive-lang-portuguese
+version             74203
+revision            0
+
+categories          tex
+maintainers         {dports @drkp}
+license             Copyleft Permissive
+description         TeX Live: Portuguese
+long_description    Support for Portuguese and Brazilian Portuguese.
+
+checksums           texlive-lang-portuguese-74203-run.tar.xz \
+                    rmd160  5f991c8ea864f6039a01cc1c16f64bdccad3b527 \
+                    sha256  f6c10b1b933f20523ad8604260401c6a71ec4d4957e84ada96b10bd3c6263f11 \
+                    size    21136 \
+                    texlive-lang-portuguese-74203-doc.tar.xz \
+                    rmd160  084fa869b1e7096cedd91df48e5414f115cdeb74 \
+                    sha256  25fbe3de30dccdbca2f77ede027572db75b4cc860f85baeba1c5eb81fe71e661 \
+                    size    11697172 \
+                    texlive-lang-portuguese-74203-src.tar.xz \
+                    rmd160  e1aa194907f091318483653616075d0cca475883 \
+                    sha256  87f1dd7985d0896cbe442a619225aa40bfe6fc9acb862d393c342ba6d5f54d4e \
+                    size    17116
+
+depends_lib         port:texlive-basic
+
+texlive.languages      \
+    {portuguese loadhyph-pt.tex 2 3 {portuges} {hyph-pt.pat.txt} {hyph-pt.hyp.txt} {} }
+
+
+texlive.texmfport

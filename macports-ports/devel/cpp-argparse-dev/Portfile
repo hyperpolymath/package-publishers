@@ -1,0 +1,27 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem              1.0
+
+PortGroup               github 1.0
+PortGroup               cmake 1.1
+
+github.setup            rue-ryuzaki argparse 1.10.0 v
+github.tarball_from     archive
+revision                0
+name                    cpp-argparse-dev
+categories              devel
+license                 MIT
+platforms               any
+supported_archs         noarch
+maintainers             {gmail.com:golubchikov.mihail @rue-ryuzaki} \
+                        openmaintainer
+description             C++ argument parser.
+long_description        Python-like header-only argument parser for C++ projects.
+
+checksums               rmd160  80bafc5852db9d9cb7d05ebc95a80175d0a7168a \
+                        sha256  5c242ef1ffbe55217603fb3df4ebf3c1335aebb8fa93dc3ecdd1ac094c8df171 \
+                        size    456674
+
+compiler.cxx_standard   2011
+
+test.run                yes

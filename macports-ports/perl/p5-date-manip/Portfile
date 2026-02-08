@@ -1,0 +1,25 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+name                p5-date-manip
+perl5.branches      5.28 5.30 5.32 5.34
+perl5.setup         Date-Manip 6.98 ../../authors/id/S/SB/SBECK
+revision            0
+maintainers         nomaintainer
+license             {Artistic-1 GPL}
+description         Date::Manip - Date manipulation routines
+long_description    {*}${description}
+
+platforms           {darwin any}
+supported_archs     noarch
+
+checksums           rmd160  fde682c57d4abfccfbb47073c991ae44a4135858 \
+                    sha256  acfd8a60519ba4cd181c8a67a83d7f029c6d9ab4e8b0212dc47e41d6210fda49 \
+                    size    1859842
+
+if {${perl5.major} != ""} {
+    depends_build-append \
+        port:p${perl5.major}-test-inter
+}

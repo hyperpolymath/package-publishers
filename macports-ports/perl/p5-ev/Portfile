@@ -1,0 +1,25 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.28 5.30 5.32 5.34
+perl5.setup         EV 4.36 ../../authors/id/M/ML/MLEHMANN
+revision            0
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         EV - perl interface to libev, a high performance full-featured event loop
+long_description    {*}${description}
+
+checksums           rmd160  85e4bb27bcc1efb8d3956a7ce06f1ec990c7e53e \
+                    sha256  3b1add70f7dc16c2e191950c63193dc745efc6280753b0eeb2abe07ff9334c78 \
+                    size    219991
+
+if {${perl5.major} != ""} {
+    depends_build-append \
+                    port:p${perl5.major}-canary-stability
+
+#   builds using embedded libev
+    depends_lib-append \
+                    port:p${perl5.major}-common-sense
+}

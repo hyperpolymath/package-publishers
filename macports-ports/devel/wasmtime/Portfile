@@ -1,0 +1,35 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           cargo   1.0
+PortGroup           github  1.0
+
+github.setup        bytecodealliance wasmtime 40.0.0 v
+github.tarball_from releases
+distname            ${name}-v${version}-src
+revision            0
+
+homepage            https://wasmtime.dev
+
+description         \
+    Standalone JIT-style runtime for WebAssembly, using Cranelift
+
+long_description    {*}${description}
+
+categories          devel
+installs_libs       no
+license             Apache-2
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+cargo.offline_cmd
+
+checksums           rmd160  9b592cba890bf5f9f43e521339f2b7504fbed4fd \
+                    sha256  0a06ae58e61043ed8ab86ee22df66fef112aa3959ac106acb450d5dafc83d2da \
+                    size    155607065
+
+destroot {
+    xinstall -m 0755 \
+        ${worksrcpath}/target/[cargo.rust_platform]/release/${name} \
+        ${destroot}${prefix}/bin/
+}

@@ -1,0 +1,48 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           xcode 1.0
+
+name                GrandPerspective
+version             3.6.1
+set version_unsc    [string map {. _} ${version}]
+license             GPL-2+
+categories          aqua sysutils
+maintainers         {amake @amake} openmaintainer
+description         Graphically show disk usage
+long_description \
+    A small utility application for macOS that graphically shows the disk usage \
+    within a file system. It can help you to manage your disk, as you can easily \
+    spot which files and folders take up the most space.
+
+homepage            http://grandperspectiv.sourceforge.net/
+master_sites        sourceforge:project/grandperspectiv/grandperspective/${version}
+
+distname            ${name}-${version_unsc}-src
+extract.suffix      .tgz
+worksrcdir          ${name}-${version_unsc}
+
+checksums           rmd160  778e64d5f0010c4924ba04a7bc71bf387f3ed68c \
+                    sha256  37b741db835b3db92a117e3844499764544c02756d90c1f34af9c3a1a75e4e77 \
+                    size    1977688
+
+build.dir           ${worksrcpath}/src
+
+xcode.scheme        ${name}
+xcode.configuration Deployment
+xcode.build.settings-append \
+                    CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
+
+# This should be removed if/when dealt with in the xcode portgroup; see:
+# https://trac.macports.org/ticket/57137
+if {[vercmp $xcodeversion 5.0] >= 0} {
+    build.pre_args  -derivedDataPath ./DerivedData
+}
+
+destroot {
+    copy "${build.dir}/build/${xcode.configuration}/${name}.app" \
+        ${destroot}${applications_dir}
+}
+
+livecheck.version   ${version_unsc}
+livecheck.regex     ${name}-(\[0-9_\]*)-src${extract.suffix}

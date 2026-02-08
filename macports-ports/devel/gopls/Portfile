@@ -1,0 +1,38 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+name                gopls
+categories          devel
+license             BSD
+maintainers         {ra1nb0w @ra1nb0w} \
+                    {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+description         gopls is the official language server for the Go language
+long_description    {*}${description}
+
+go.setup            golang.org/x/tools 0.18.1 gopls/v
+go.offline_build    no
+revision            0
+
+checksums           rmd160  97edef0aa158bb74b21b163897021ffc800048bd \
+                    sha256  e49fae5dd964432a0ea1661868e858acd2aa66aaf7e1c1d646fb8506f15c8e52 \
+                    size    7646170
+
+build.dir           ${worksrcpath}/${name}
+
+test.run            yes
+test.cmd            ${worksrcpath}/${name}/gopls version
+
+github.livecheck.regex  {([0-9.]+)}
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name}/${name} \
+        ${destroot}${prefix}/bin/${name}
+
+    set dest_doc ${destroot}${prefix}/share/doc/${name}
+    xinstall -d -m 0755 ${dest_doc}
+    xinstall -m 0644 {*}[glob ${worksrcpath}/${name}/doc/*.md] ${dest_doc}
+    copy ${worksrcpath}/${name}/doc/design ${dest_doc}
+}

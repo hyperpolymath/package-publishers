@@ -1,0 +1,25 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           octave 1.0
+
+octave.setup        github gnu-octave octave-audio 2.0.9 release-
+octave.module       audio
+revision            1
+octave.config_h     yes
+license             GPL-3+
+maintainers         {mps @Schamschula} openmaintainer
+description         Audio recording, processing, and playing tools.
+long_description    {*}${description}
+
+github.tarball_from releases
+distname            audio-${version}
+
+checksums           rmd160  e07495bc8b4aeab0f141d38c832cd48c9daec06f \
+                    sha256  b6a36c060e92b2ca4a7bcc2283cc1bb16486eea7c8acea06fb9e65141c61f240 \
+                    size    522520
+
+configure.env-append \
+                    "RTMIDI_CFLAGS=-pthread -D__UNIX_JACK__ -D__MACOSX_CORE__ -I${prefix}/include/rtmidi"
+
+depends_lib         port:rtmidi

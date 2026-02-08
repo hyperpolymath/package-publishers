@@ -1,0 +1,55 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           cmake 1.1
+PortGroup           github 1.0
+
+github.setup        lexbor lexbor 2.6.0 v
+revision            0
+checksums           rmd160  c98ac736a77557b62aa36cb0254abcbb7c88352d \
+                    sha256  e9bb1aa8027ab92f11d5e8e6e7dc9b7bd632248c11a288eec95ade97bb7951a3 \
+                    size    5549881
+
+description         a fast embeddable web browser engine
+
+long_description    ${name} is {*}${description} written in C \
+                    with no dependencies.
+
+categories          net www
+maintainers         {ryandesign @ryandesign} openmaintainer
+license             Apache-2
+
+homepage            https://lexbor.com
+github.tarball_from archive
+
+# https://github.com/lexbor/lexbor/issues/226
+compiler.blacklist-append \
+                    *gcc-4.0 *gcc-4.2
+compiler.c_standard 1999
+
+set docdir          ${prefix}/share/doc/${subport}
+
+configure.args-append \
+                    -DLEXBOR_OPTIMIZATION_LEVEL="${configure.optflags}"
+
+post-destroot {
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 0644 -W ${worksrcpath} \
+        CHANGELOG.md LICENSE NOTICE README.md \
+        ${destroot}${docdir}
+}
+
+variant perf description "Enable support for rdtsc" {
+    configure.args-append \
+                    -DLEXBOR_WITH_PERF=ON
+}
+
+variant tests description "Enable testing" {
+    configure.pre_args-replace \
+                    -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON \
+                    -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=OFF
+    configure.args-append \
+                    -DLEXBOR_BUILD_TESTS=ON
+
+    test.run        yes
+}

@@ -1,0 +1,74 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+
+version             5.16.1
+revision            0
+
+if {${os.major} >= 17} {
+    set source_build    yes
+} else {
+    set source_build    no
+}
+
+if ${source_build} {
+    PortGroup           golang 1.0
+
+    go.setup            github.com/symfony-cli/symfony-cli ${version} v
+} else {
+    PortGroup           github 1.0
+
+    github.setup        symfony-cli symfony-cli ${version} v
+}
+
+name                symfony-cli
+
+homepage            https://symfony.com/download
+
+description         The Symfony CLI tool
+
+long_description    The Symfony CLI tool is a must-have tool when developing \
+                    Symfony applications on your local machine.
+
+categories          devel
+installs_libs       no
+license             AGPL-3+
+maintainers         {@antalaron antalaron.hu:antalaron} \
+                    openmaintainer
+
+if ${source_build} {
+    # Allow Go to fetch dependencies at build time
+    go.offline_build    no
+    build.env           CGO_ENABLED=0
+    build.args          -o ${workpath}/symfony -trimpath -ldflags="-s -w -X 'main.version=${version}' -X 'main.channel=stable'"
+
+    use_parallel_build  no
+
+    checksums           rmd160  6722dc73520fe109d70a34a150f22a82e18823da \
+                        sha256  9222ea6c4996c1231577f7475c65902f2eb332ee5249d06c6017218dc35c6a19 \
+                        size    290910
+} else {
+    build {}
+
+    distname            symfony-cli_darwin_all
+
+    checksums           rmd160  f8ef5a2c1c6644030f3e04d204bbf0268cb4998c \
+                        sha256  2493fc83e05cc13448874b0f41158f47ff4bbdd92a3bb43f6c4a212107ddeb97 \
+                        size    12228072
+
+    github.tarball_from releases
+
+    use_configure       no
+}
+
+destroot {
+    if ${source_build} {
+        if {${configure.build_arch} eq {arm64}} {
+            system "codesign -f -s - ${workpath}/symfony"
+        }
+    }
+
+    xinstall -m 0755 -W ${workpath} symfony ${destroot}${prefix}/bin
+}
+
+github.livecheck.regex {([0-9.]+)}

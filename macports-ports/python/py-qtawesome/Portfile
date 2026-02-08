@@ -1,0 +1,42 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+PortGroup           github 1.0
+
+github.setup        spyder-ide qtawesome 1.4.0 v
+github.tarball_from archive
+revision            0
+name                py-qtawesome
+
+supported_archs     noarch
+platforms           {darwin any}
+license             MIT
+maintainers         {reneeotten @reneeotten} openmaintainer
+
+description         Iconic Fonts in PyQt and PySide applications.
+long_description    QtAwesome enables iconic fonts such as Font Awesome and \
+                    Elusive Icons in PyQt and PySide applications.
+
+checksums           rmd160  9880d0e5130ec77fed0d38f22eef4cd5161b90b3 \
+                    sha256  4b05beb43a5144e1221e0be2ee55a4fe363be89fd74a635f9172dffc35798fb4 \
+                    size    2892421
+
+python.versions     310 311 312 313 314
+
+if {${name} ne ${subport}} {
+    depends_lib-append \
+                    port:py${python.version}-qtpy
+
+    depends_test-append \
+                    port:py${python.version}-pytest-qt
+
+    test.run        yes
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} LICENSE.txt CHANGELOG.md \
+           README.md  ${destroot}${docdir}
+    }
+}

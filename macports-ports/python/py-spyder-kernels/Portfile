@@ -1,0 +1,45 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-spyder-kernels
+version             3.1.2
+revision            0
+epoch               1
+
+categories-append   devel
+platforms           {darwin any}
+supported_archs     noarch
+license             MIT
+maintainers         {reneeotten @reneeotten} openmaintainer
+
+description         Jupyter kernels for Spyder's console.
+long_description    {*}${description}
+
+homepage            https://github.com/spyder-ide/spyder-kernels
+
+distname            spyder_kernels-${version}
+
+checksums           rmd160  f03243cc898d6d99e436ecf461e2e640ed88d291 \
+                    sha256  3a7ac9b6aeb1c594f869ab08376221bd449b324d1f8a4cb0ba3cc20d151dc1ac \
+                    size    86048
+
+python.versions     310 311 312 313 314
+
+if {${name} ne ${subport}} {
+    depends_lib-append \
+                    port:py${python.version}-cloudpickle \
+                    port:py${python.version}-ipykernel \
+                    port:py${python.version}-ipython \
+                    port:py${python.version}-jupyter_client \
+                    port:py${python.version}-wurlitzer \
+                    port:py${python.version}-zmq
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} AUTHORS.txt CHANGELOG.md \
+            LICENSE.txt README.md ${destroot}${docdir}
+    }
+}

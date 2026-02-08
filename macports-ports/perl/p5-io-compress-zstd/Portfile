@@ -1,0 +1,25 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.28 5.30 5.32 5.34
+perl5.setup         IO-Compress-Zstd 2.214 ../../authors/id/P/PM/PMQS
+revision            0
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         IO::Compress::Zstd - Read/Write zstd files/buffers
+long_description    {*}${description}
+
+platforms           {darwin any}
+supported_archs     noarch
+
+checksums           rmd160  8d712973e20371880e8ad9b402180d2ad1e5f71c \
+                    sha256  cd18b6cdf98711fc3d251139bf6481a5ccd3c45ce5de94e6c36855291ebea18e \
+                    size    80215
+
+if {${perl5.major} != ""} {
+    depends_lib-append \
+                    port:p${perl5.major}-compress-stream-zstd \
+                    port:p${perl5.major}-io-compress
+}

@@ -1,0 +1,58 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem              1.0
+PortGroup               github 1.0
+
+github.setup            gitkraken gk-cli 3.1.48 v
+name                    gk
+github.tarball_from     releases
+
+categories              devel
+license                 CCBY-3
+installs_libs           no
+maintainers             {@sergiolms}\
+                        openmaintainer
+
+supported_archs         x86_64 arm64
+
+description             Official CLI for GitKraken
+long_description        ${name} is GitKraken on the command line. It makes working across multiple \
+                        repos easier with Workspaces, provides access to pull requests and \
+                        issues from multiple services (GitHub, GitLab, Bitbucket, etc.), \
+                        and seamlessly connects with GitKraken Client and GitLens in VS Code \
+                        to visualize git information when you need it.
+
+if {${build_arch} eq "x86_64"} {
+    # file name is "amd64" for x86_64
+    set arch_filename   amd64
+    checksums           rmd160  256c2136b547bd5d8e7e2e0843ef5674b30b8a17 \
+                        sha256  645eede8a4f3424835141dcc86819cf528a223197f82728d771239a8f1f466fb \
+                        size    8037765
+} else {
+    # arm64
+    set arch_filename ${build_arch}
+    checksums           rmd160  44c638d1107e81be904c67f6af3847fab1168a69 \
+                        sha256  93d8da1fd54b5df7b61557564b4c07eb777325d78fa3b235d0589531463f6504 \
+                        size    7339240
+}
+
+distfiles               ${name}_${version}_darwin_${arch_filename}.zip
+extract.mkdir           yes
+use_zip                 yes
+
+use_configure           no
+build                   {}
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/gk ${destroot}${prefix}/bin
+    # All supported shells: bash, fish, powershell, zsh
+    set comp_path(bash) ${destroot}${prefix}/share/bash-completion/completions/${name}
+    set comp_path(fish) ${destroot}${prefix}/share/fish/completions/${name}.fish
+    set comp_path(zsh)  ${destroot}${prefix}/share/zsh/site-functions/_${name}
+    foreach shell {bash fish zsh} {
+        xinstall -d [file dirname $comp_path(${shell})]
+        system -W ${worksrcpath} "./${name} completion ${shell} > $comp_path(${shell})"
+    }
+}
+
+github.livecheck.regex  {([0-9.]+)}

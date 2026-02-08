@@ -1,0 +1,32 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-types-setuptools
+version             80.9.0.20251223
+revision            0
+
+categories-append   devel
+license             Apache-2
+supported_archs     noarch
+platforms           {darwin any}
+maintainers         nomaintainer
+
+distname            types_setuptools-${version}
+
+description         Typing stubs for setuptools
+long_description    {*}${description}. Typeshed contains external type \
+                    annotations for the Python standard library and \
+                    Python builtins, as well as third party packages \
+                    as contributed by people external to those projects. \
+                    This data can e.g. be used for static analysis, type \
+                    checking or type inference.
+
+homepage            https://github.com/python/typeshed
+
+checksums           rmd160  b5dfe8a015eab138303217fbb1207bb466935cad \
+                    sha256  d3411059ae2f5f03985217d86ac6084efea2c9e9cacd5f0869ef950f308169b2 \
+                    size    42420
+
+python.versions     39 310 311 312 313 314

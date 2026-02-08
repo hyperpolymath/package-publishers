@@ -1,0 +1,23 @@
+# Created with YamlCreate.ps1 Dumplings Mod
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.12.0.schema.json
+
+PackageIdentifier: KDE.Kiriki
+PackageVersion: master
+InstallerType: nullsoft
+UpgradeBehavior: install
+ProductCode: kiriki
+Installers:
+- Architecture: x64
+  Scope: user
+  InstallerUrl: https://cdn.kde.org/ci-builds/games/kiriki/master/windows/kiriki-master-744-windows-cl-msvc2022-x86_64.exe
+  InstallerSha256: A21F78ACCA978CDD714EFA62A2FC31F25EC6D8CB63852A42FE70C2E489D61E00
+  InstallerSwitches:
+    Custom: /CurrentUser
+- Architecture: x64
+  Scope: machine
+  InstallerUrl: https://cdn.kde.org/ci-builds/games/kiriki/master/windows/kiriki-master-744-windows-cl-msvc2022-x86_64.exe
+  InstallerSha256: A21F78ACCA978CDD714EFA62A2FC31F25EC6D8CB63852A42FE70C2E489D61E00
+  InstallerSwitches:
+    Custom: /AllUsers
+ManifestType: installer
+ManifestVersion: 1.12.0

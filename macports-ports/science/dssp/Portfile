@@ -1,0 +1,45 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           cmake 1.1
+
+github.setup        PDB-REDO dssp 4.5.7 v
+github.tarball_from archive
+revision            0
+
+categories          science
+license             BSD
+maintainers         {reneeotten @reneeotten} openmaintainer
+
+description         DSSP automates protein secondary structure assignment.
+long_description    {*}${description}
+
+checksums           rmd160  52c70ca68174dffa1106fc60219dca5e2ffc9185 \
+                    sha256  4b2c399e34338e67b4ee4c44569fa7464da1f4a5b5cc4b7fd41148e294ddb4f5 \
+                    size    223409
+
+compiler.cxx_standard 2020
+
+patchfiles-append   patch-CMakeLists.txt.diff
+
+depends_lib-append  port:libcifpp \
+                    port:libmcfp \
+                    port:zlib \
+                    port:fast-float
+
+configure.args-append \
+                    -DBUILD_SHARED_LIBS=ON \
+                    -DINSTALL_LIBRARY=ON \
+                    -DBUILD_TESTING=OFF
+
+# ___atomic_store_8, ___atomic_load_8, ___atomic_fetch_add_8
+# https://github.com/PDB-REDO/dssp/issues/84
+if {[string match *gcc* ${configure.compiler}]} {
+    configure.ldflags-append \
+                    -latomic
+}
+
+post-destroot {
+    file delete -force ${destroot}${prefix}/share/libcifpp/mmcif_pdbx.dic
+}

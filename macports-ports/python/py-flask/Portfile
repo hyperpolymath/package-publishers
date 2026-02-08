@@ -1,0 +1,73 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-flask
+version             3.1.1
+revision            0
+
+checksums           rmd160  f0f3f546fc0403aa43bd3cf73afaebbab8082331 \
+                    sha256  284c7b8f2f58cb737f0cf1c30fd7eaf0ccfcde196099d24ecede3fc2005aa59e \
+                    size    753440
+
+python.versions     27 310 311 312 313
+platforms           {darwin any}
+maintainers         nomaintainer
+license             BSD
+supported_archs     noarch
+
+description         microframework for Python based on Werkzeug and Jinja2
+
+long_description    Flask is a {*}${description}, intended for small-scale applications
+
+homepage            https://palletsprojects.com/p/flask/
+
+python.pep517       yes
+
+python.pep517_backend \
+                    flit
+
+if {${name} ne ${subport}} {
+    # The last supported version for 27
+    # See: https://github.com/pallets/flask/blob/main/CHANGES.rst#version-200
+    if {${python.version} == 27} {
+        python.rootname     Flask
+
+        version             1.1.4
+        revision            0
+        checksums           rmd160  03b23def022b1cf6afdcae01cb840f4623288c43 \
+                            sha256  0fbeb6180d383a9186d0d6ed954e0042ad9f18e0e8de088b2b419d526927d196 \
+                            size    635920
+
+        python.pep517       no
+
+        depends_build-append \
+                            port:py${python.version}-setuptools
+    }
+
+    depends_lib-append      port:py${python.version}-jinja2 \
+                            port:py${python.version}-werkzeug \
+                            port:py${python.version}-itsdangerous \
+                            port:py${python.version}-click
+
+    if {${python.version} > 37} {
+        depends_lib-append  port:py${python.version}-blinker
+    }
+
+    if {${python.version} < 310} {
+        depends_lib-append  port:py${python.version}-importlib-metadata
+    }
+
+    # test before 2.x requires missed py-pathlib
+    if {${python.version} > 27} {
+        test.run            yes
+    }
+
+    if {${python.version} > 37} {
+        patchfiles-append   disable-failing-tests.diff
+        test.env-append     PYTHONPATH=${worksrcpath}/src
+    }
+
+    livecheck.type      none
+}

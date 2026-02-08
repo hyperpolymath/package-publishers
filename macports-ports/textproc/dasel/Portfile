@@ -1,0 +1,39 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/TomWright/dasel 3.2.0 v
+go.package          github.com/tomwright/dasel
+go.offline_build    no
+revision            0
+
+homepage            https://daseldocs.tomwright.me
+
+description         Query and update JSON, TOML, YAML and XML from the \
+                    command line.
+
+long_description    Dasel (short for data-selector) allows you to query and \
+                    modify data structures using selector strings.  \
+                    Comparable to jq / yq, but supports JSON, YAML, TOML and \
+                    XML with zero runtime dependencies.
+
+categories          textproc
+installs_libs       no
+license             MIT
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           rmd160  7d51c10ff573a30a93b2337d7dbbf7f32b7db535 \
+                    sha256  8e0c20898ccf24ac9ca2217dec21bc4e0f6a17949431756ea0bce94d55d0cd43 \
+                    size    3107838
+
+build.pre_args-append \
+    -ldflags \" \
+        -X \'${go.package}/internal.Version=${github.tag_prefix}${version}\'\"
+
+build.args          ./cmd/dasel
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+}

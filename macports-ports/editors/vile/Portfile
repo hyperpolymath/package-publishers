@@ -1,0 +1,37 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+
+name                vile
+version             9.8za
+revision            0
+checksums           rmd160  832f3f4bd7166b47bb22cf5d75f84075f2d494ac \
+                    sha256  65ba15ec145dfc5506217162228c7d88f01c0490a0dccde7a8a19f1c7c1b93b2 \
+                    size    2496214
+
+categories          editors
+platforms           darwin
+maintainers         nomaintainer
+license             GPL-2
+
+description         Vi Like Emacs
+
+long_description    vile is a text editor which is extremely compatible \
+                    with vi in terms of finger feel. in addition, it \
+                    has extended capabilities in many areas, notably \
+                    multi-file editing and viewing, key rebinding, real \
+                    X window system support, an optional embedded perl \
+                    interpreter, and robust support for non-Unix hosts.
+
+homepage            https://invisible-island.net/vile/
+master_sites        https://invisible-island.net/archives/${name}/current/ \
+                    https://invisible-mirror.net/archives/${name}/current/
+extract.suffix      .tgz
+
+depends_build       port:reflex
+
+depends_lib         port:ncurses port:libiconv
+
+configure.args      --with-ncurses
+
+livecheck.regex     ${name}-(.*)${extract.suffix}

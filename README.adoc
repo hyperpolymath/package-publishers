@@ -1,0 +1,32 @@
+= Package Publishers
+// SPDX-License-Identifier: PMPL-1.0-or-later
+
+Publishing definitions for distributing Hyperpolymath tools across package managers and platform stores.
+
+== Components
+
+* `homebrew-tap/` - Homebrew formulae and casks (macOS/Linux)
+* `macports-ports/` - MacPorts portfiles (macOS)
+* `winget-pkgs/` - Windows Package Manager manifests (Windows)
+
+== Future
+
+Potential additions for other distribution channels:
+
+* Flatpak manifests
+* Snap packages
+* Nix/Guix package definitions
+* AUR (Arch User Repository) PKGBUILDs
+* Chocolatey packages (Windows)
+* Scoop buckets (Windows)
+* APT/RPM spec files (Linux)
+* Crates.io publishing configs (Rust)
+* Hex.pm publishing configs (Elixir/Erlang)
+
+== License
+
+PMPL-1.0-or-later
+
+== Author
+
+Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>

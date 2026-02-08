@@ -1,0 +1,40 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           muniversal 1.1
+
+github.setup        rurban safeclib 3.9.1 v
+github.tarball_from releases
+github.livecheck.regex  (\[0-9]+\\.\[0-9]+(\\.\[0-9]+)?)
+
+revision            0
+
+categories          devel
+license             MIT
+maintainers         {makr @mohd-akram} \
+                    openmaintainer
+
+description         Safe C Library
+
+long_description    This library implements the secure C11 Annex K functions \
+                    on top of most libc implementations, which are missing \
+                    from them.
+
+checksums           rmd160  2244e3eeb3e9cbf61aab3c0a86392103e72af712 \
+                    sha256  167502713a4f1a37017b8b830535b31b5762be4bef512bebe19072f17f436dd4 \
+                    size    999241
+
+compiler.c_standard 1999
+# safe_mem_constraint.c: error: thread-local storage not supported for this target
+compiler.thread_local_storage   yes
+
+# build fails otherwise
+configure.args      --disable-hardening
+
+if {${build_arch} eq "ppc" || ${build_arch} eq "ppc64"} {
+    configure.cflags-append -std=c99
+}
+
+test.run            yes
+test.target         check

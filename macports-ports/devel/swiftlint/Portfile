@@ -1,0 +1,41 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        realm swiftlint 0.57.0
+github.tarball_from archive
+revision            0
+
+platforms           {darwin >= 21}
+categories          devel
+license             MIT
+maintainers         {gmail.com:christos.koninis @csknns} \
+                    openmaintainer
+description         Swift linter
+long_description    A tool to enforce Swift style and conventions
+
+checksums           rmd160  fce7fd39e2948896ff08682b83a5149f31104bb6 \
+                    sha256  0f3db0cb0ca8696c72b3215fa543b339158e564347070d7ec0dc740446e0e4b6 \
+                    size    821065
+
+# Clearing CPATH because of header conflicts with MacOSX13.sdk when using swiftPM build system
+compiler.cpath
+
+use_configure       no
+use_xcode           yes
+
+build.cmd           swift
+build.target        build
+build.args          --configuration release --disable-sandbox
+
+test.run            yes
+test.cmd            swift
+test.target         test
+test.args           --disable-sandbox
+
+set builtproductdir ${worksrcpath}/.build/release
+
+destroot {
+    xinstall -m 755 ${builtproductdir}/${name} ${destroot}${prefix}/bin/
+}

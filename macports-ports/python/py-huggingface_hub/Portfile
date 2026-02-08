@@ -1,0 +1,41 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-huggingface_hub
+version             1.1.6
+revision            0
+categories-append   textproc
+
+license             Apache-2
+maintainers         nomaintainer
+platforms           {darwin any}
+supported_archs     noarch
+homepage            https://github.com/huggingface/huggingface_hub
+
+description         Client library to download and publish models and \
+                    other files on the huggingface.co hub
+
+long_description    {*}${description}
+
+checksums           rmd160  89978a72302b137f551ccd0528804ce31d1fb44a \
+                    sha256  e1beacb611d74a8189b4c5298e8675fb518256af73b38143171f6efa7d822cf6 \
+                    size    607477
+
+python.versions     310 311 312 313
+
+if {${name} ne ${subport}} {
+    depends_run-append \
+                    port:py${python.version}-filelock \
+                    port:py${python.version}-fsspec \
+                    port:py${python.version}-typer \
+                    port:py${python.version}-httpx \
+                    port:py${python.version}-packaging \
+                    port:py${python.version}-yaml \
+                    port:py${python.version}-shellingham \
+                    port:py${python.version}-typing_extensions \
+                    port:py${python.version}-hf-xet \
+                    port:py${python.version}-tqdm
+
+}

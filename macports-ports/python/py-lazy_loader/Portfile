@@ -1,0 +1,40 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-lazy_loader
+version             0.4
+revision            0
+
+platforms           {darwin any}
+supported_archs     noarch
+maintainers         nomaintainer
+license             BSD
+
+description         load subpackages and functions on demand
+
+long_description    ${python.rootname} makes it easy to load \
+                    subpackages and functions on demand.
+
+homepage            https://scientific-python.org/specs/spec-0001/
+
+checksums           md5 0ed9a697d30fbe5b7f24106b448d634d \
+                    rmd160 70da70209cec9d0702b609bef3709c2f3267a402 \
+                    sha256 47c75182589b91a4e1a85a136c074285a5ad4d9f39c63e0d7fb76391c4574cd1 \
+                    size 15431
+
+python.versions     310 311 312 313 314
+
+if {${name} ne ${subport}} {
+    test.run        yes
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} LICENSE.md README.md \
+            ${destroot}${docdir}
+    }
+
+    depends_lib-append  port:py${python.version}-packaging
+}

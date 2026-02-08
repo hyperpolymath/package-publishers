@@ -1,0 +1,73 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem       1.0
+PortGroup        github 1.0
+PortGroup        legacysupport 1.1
+PortGroup        makefile 1.0
+
+# _clock_gettime
+legacysupport.newest_darwin_requires_legacy 15
+
+name             quickjs
+
+categories       devel
+license          MIT
+maintainers      nomaintainer
+description      A small and embeddable Javascript engine
+long_description ${name} is a small and embeddable Javascript engine. It \
+    supports the ES2023 specification including modules, asynchronous \
+    generators, proxies and BigInt.
+homepage         https://bellard.org/quickjs/
+
+subport          ${name}-devel {}
+
+if {${subport} eq ${name}} {
+    conflicts       ${name}-devel
+    github.setup    bellard ${name} fa628f8c523ecac8ce560c081411e91fcaba2d20
+    github.tarball_from archive
+    version         20250913
+    revision        0
+    checksums       rmd160  39e947aced6544a85fad6ab91594181615710281 \
+                    sha256  2623e6336b1b8d82a9e509899f5c934bdfeda0e6f518fe5b7ad4fdaa01cafb7e \
+                    size    594843
+} else {
+    # quickjs-devel
+    conflicts       ${name}
+    github.setup    bellard ${name} b22685617750e51d95f643d8eb1382dd09dd3bf1
+    github.tarball_from archive
+    version         20251129
+    revision        0
+    checksums       rmd160 5b1e1d1c9569236aa233d28dc09c57e6f7e0bbb9 \
+                    sha256 247005f18f6805a60f3d476a1f275c0f978841349ba3b6559fad7b5594bcaaaa \
+                    size   617319
+}
+
+compiler.c_standard  2011
+# fatal error: 'stdatomic.h' file not found
+compiler.blacklist-append {clang < 700}
+
+# without this linking to legacysupport is broken
+if {${os.platform} eq "darwin" && ${os.major} < 16} {
+    configure.cflags-append \
+                    -D_DARWIN_C_SOURCE -isystem${prefix}/include/LegacySupport
+
+    # See https://github.com/bsekisser/quickjs/commit/c35e6bf
+    if {[string match *gcc* ${configure.compiler}]} {
+            patchfiles-append \
+                    patch-darwin-gcc.diff
+            configure.ldflags-append \
+                    -latomic
+    } elseif {[string match *clang* ${configure.compiler}]} {
+            patchfiles-append \
+                    patch-darwin-clang.diff
+    }
+}
+
+destroot.destdir PREFIX=${destroot}${prefix}
+
+post-destroot {
+    file mkdir ${destroot}${prefix}/lib/pkgconfig
+    copy ${filespath}/${name}.pc ${destroot}${prefix}/lib/pkgconfig
+    reinplace "s|@@PREFIX@@|${prefix}|" ${destroot}${prefix}/lib/pkgconfig/${name}.pc
+    reinplace "s|@@VERSION@@|${version}|" ${destroot}${prefix}/lib/pkgconfig/${name}.pc
+}

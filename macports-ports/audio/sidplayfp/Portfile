@@ -1,0 +1,32 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        libsidplayfp sidplayfp 2.16.0 v
+github.tarball_from releases
+revision            0
+categories          audio
+license             GPL-2+
+maintainers         {makr @mohd-akram} openmaintainer
+
+description         Console SID/MUS player
+
+long_description    sidplayfp is a console C64 music player which uses the \
+                    libsidplayfp engine to provide the best SID listening \
+                    experience.
+
+checksums           rmd160  609c3f44c2bdad0359d3a6b8365a592af123747c \
+                    sha256  56090eb193e603e67ac9fbeb1d89c52730b8c853e78c3e5f103427f1003e496f \
+                    size    248530
+
+depends_build       path:bin/pkg-config:pkgconfig
+
+depends_lib         port:libsidplayfp \
+                    port:mpg123 \
+                    port:libiconv \
+                    port:pulseaudio
+
+compiler.cxx_standard   2011
+
+github.livecheck.regex  {([0-9.]+)}

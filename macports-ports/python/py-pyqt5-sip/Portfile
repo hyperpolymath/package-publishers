@@ -1,0 +1,35 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-pyqt5-sip
+python.rootname     PyQt5-sip
+version             12.17.2
+revision            0
+
+categories-append   devel
+license             {GPL-2 GPL-3 PSF}
+maintainers         {reneeotten @reneeotten} openmaintainer
+
+description         The sip module support for PyQt5
+long_description    {*}${description}
+
+homepage            https://www.riverbankcomputing.com/software/sip/
+
+distname            pyqt5_sip-${version}
+
+checksums           rmd160  360dc2667273da927f0baaf81c597d2f18d7bcbf \
+                    sha256  7f66565c2a13d34d8ad6aad08e953d355ea3fe466d991d51aa5a0966a5289f05 \
+                    size    104246
+
+python.versions     39 310 311 312 313 314
+
+if {${name} ne ${subport}} {
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} README \
+            ${destroot}${docdir}
+    }
+}

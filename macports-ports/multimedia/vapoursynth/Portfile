@@ -1,0 +1,58 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem              1.0
+PortGroup               github 1.0
+
+github.setup            vapoursynth vapoursynth 72 R
+github.tarball_from     archive
+revision                0
+
+description             A video processing framework with simplicity in mind
+
+long_description        VapourSynth is an application for video manipulation. \
+                        Or a plugin. Or a library. It’s hard to tell because \
+                        it has a core library written in C++ and a Python \
+                        module to allow video scripts to be created. The \
+                        software has been heavily inspired by Avisynth.
+
+checksums               rmd160  68c2bac1701e5f8d87e1caa9d5bac1ccc542a825 \
+                        sha256  650f77feebfd08842b521273f59e0c88f7ba9d7cb5f151d89b79b8dfdd4ce633 \
+                        size    1877621
+
+categories              multimedia python
+license                 LGPL-2.1+
+maintainers             {gmail.com:herby.gillot @herbygillot} \
+                        openmaintainer
+
+compiler.cxx_standard   2014
+compiler.thread_local_storage yes
+
+set python_branch       3.13
+set python_version      [string map {. {}} ${python_branch}]
+
+use_autoreconf          yes
+autoreconf.cmd          ./autogen.sh
+autoreconf.args
+
+depends_build-append    port:autoconf \
+                        port:automake \
+                        port:libtool \
+                        port:pkgconfig \
+                        port:py${python_version}-cython
+
+depends_lib-append      path:lib/libavcodec.dylib:ffmpeg \
+                        port:ImageMagick \
+                        path:lib/pkgconfig/libass.pc:libass \
+                        port:libiconv \
+                        port:python${python_version} \
+                        port:zimg
+
+configure.args          --disable-silent-rules \
+                        --with-cython=${prefix}/bin/cython-${python_branch} \
+                        --with-python_prefix=${frameworks_dir}/Python.framework/Versions/${python_branch}
+
+configure.python        ${prefix}/bin/python${python_branch}
+
+build.env-append        PYTHON=${configure.python}
+
+github.livecheck.regex  {([0-9]+)}

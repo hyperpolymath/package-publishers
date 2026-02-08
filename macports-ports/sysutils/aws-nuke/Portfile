@@ -1,0 +1,42 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/ekristen/aws-nuke 3.62.2 v
+go.package          github.com/ekristen/aws-nuke/v3
+go.offline_build    no
+revision            0
+
+homepage            https://aws-nuke.ekristen.dev/
+
+description         Remove all the resources from an AWS account
+
+long_description    {*}${description}
+
+categories          sysutils
+installs_libs       no
+license             MIT
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           rmd160  26f498033eadff31fbc72485efbd22721db5ab7a \
+                    sha256  589c4a8a041d8e6325859e6de8bb72ed8d4f8fc940748493580c6373e2a97efb \
+                    size    620581
+
+set commit          1b0ad9d4a3a1e93a5b3238b72e525c8e9dcb5790
+
+build.args-append   \
+    -ldflags \" \
+        -X ${go.package}/pkg/common.BRANCH=master       \
+        -X ${go.package}/pkg/common.COMMIT=${commit}    \
+        -X ${go.package}/pkg/common.SUMMARY=v${version} \
+        -X ${go.package}/pkg/common.VERSION=${version}  \
+    \"
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+
+    xinstall -d ${destroot}${prefix}/share/${name}/
+    copy ${worksrcpath}/docs ${destroot}${prefix}/share/${name}/
+}

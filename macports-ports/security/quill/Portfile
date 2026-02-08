@@ -1,0 +1,36 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/anchore/quill 0.5.1 v
+revision            0
+
+description         Simple macOS binary signing from any platform
+
+long_description    {*}${description}
+
+categories          security sysutils
+installs_libs       no
+license             Apache-2
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           rmd160  50f893294db5aa33c4ec71cd06c52234a2da2687 \
+                    sha256  e550da366c87be04ac13260c769f8a593a4a49432136a2b152a69e43b98c20f0 \
+                    size    161144
+
+go.offline_build no
+
+build.pre_args-append \
+    -ldflags \" \
+        -w -s -extldflags '-static' \
+        -X main.version=v${version} \
+    \" \
+    -o _bin/${name}
+
+build.args          ./cmd/${name}
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/_bin/${name} ${destroot}${prefix}/bin/
+}

@@ -1,0 +1,27 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github  1.0
+
+github.setup        akheron jansson 2.14.1 v
+github.tarball_from releases
+revision            0
+
+categories          devel
+license             MIT
+maintainers         {stromnov @stromnov} openmaintainer
+
+description         C library for encoding, decoding and manipulating JSON data.
+long_description    {*}${description}
+
+homepage            https://www.digip.org/jansson/
+
+checksums           rmd160  efe19de88976cb21e538c0220902547db6d60bc6 \
+                    sha256  2521cd51a9641d7a4e457f7215a4cd5bb176f690bc11715ddeec483e85d9e2b3 \
+                    size    614984
+
+post-destroot {
+    set docdir ${destroot}${prefix}/share/doc/${subport}
+    xinstall -d ${docdir}
+    xinstall -m 0644 {*}[glob ${worksrcpath}/doc/*.rst] ${docdir}
+}

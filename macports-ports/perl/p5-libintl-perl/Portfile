@@ -1,0 +1,29 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.28 5.30 5.32 5.34
+perl5.setup         libintl-perl 1.35 ../../authors/id/G/GU/GUIDO
+revision            0
+license             GPL-3
+maintainers         nomaintainer
+description         Perl internationalization library
+long_description    An internationalization library for Perl compatible with \
+                    the Uniforum message translations system such as the \
+                    one in GNU gettext.
+
+homepage            https://metacpan.org/release/${perl5.module}
+
+checksums           rmd160  e7bbaf7e41c957e8e45244dc9f8230cf03c7449c \
+                    sha256  64abed956aa07d1c8cc816c91cf78642c02faf03ab704ed38031baa07f06b16a \
+                    size    581376
+
+if {${perl5.major} != ""} {
+    depends_build-append \
+                    port:gettext
+
+    depends_lib-append \
+                    port:gettext-runtime \
+                    port:libiconv
+}

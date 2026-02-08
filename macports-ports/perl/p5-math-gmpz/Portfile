@@ -1,0 +1,24 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.28 5.30 5.32 5.34
+perl5.setup         Math-GMPz 0.68 ../../authors/id/S/SI/SISYPHUS
+revision            0
+license             {Artistic-1 GPL}
+maintainers         nomaintainer
+description         Math::GMPz - perl interface to the GMP library's integer (mpz) functions.
+long_description    {*}${description}
+
+checksums           rmd160  4c6df43e1120424aab3b2137cad1045911ae1cad \
+                    sha256  3eddce3899786b4582a767faf5a7cb7723a7019c1d83593b4520e4926e52e65d \
+                    size    111729
+
+if {${perl5.major} != ""} {
+    depends_build-append \
+                    port:p${perl5.major}-test-warn
+
+    depends_lib-append \
+                    port:gmp
+}

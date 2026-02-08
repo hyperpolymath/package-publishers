@@ -1,0 +1,43 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem              1.0
+PortGroup               python 1.0
+
+name                    py-pygmt
+version                 0.17.0
+revision                0
+
+categories-append       science
+platforms               {darwin any}
+supported_archs         noarch
+license                 BSD
+maintainers             nomaintainer
+
+description             Python interface for the Generic Mapping Tools
+long_description        PyGMT is a library for processing geospatial and geophysical data \
+                        and making publication-quality maps and figures. It provides a Pythonic \
+                        interface for the Generic Mapping Tools (GMT), a command-line program \
+                        widely used across the Earth, Ocean, and Planetary sciences and beyond.
+
+homepage                https://pygmt.org/
+
+checksums               rmd160  b3c8d6df60a99119ed9bc413da40f6114e52cdb5 \
+                        sha256  06d7581bc35641db318c418aba02163bc519ba267a5a60b5cc419eee40390503 \
+                        size    228512
+
+python.versions         311 312 313
+
+if {${name} ne ${subport}} {
+    depends_build-append    port:py${python.version}-setuptools_scm
+
+    depends_run-append      port:gmt6 \
+                            port:py${python.version}-numpy \
+                            port:py${python.version}-pandas \
+                            port:py${python.version}-xarray \
+                            port:py${python.version}-packaging
+
+    notes "
+        Consider setting the GMT_LIBRARY_PATH environment variable\
+        to the correct location of gmt6 before using ${name}.\
+    "
+}

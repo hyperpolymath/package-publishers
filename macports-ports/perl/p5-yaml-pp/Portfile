@@ -1,0 +1,29 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.28 5.30 5.32 5.34
+perl5.setup         YAML-PP v0.39.0 ../../authors/id/T/TI/TINITA
+revision            0
+license             {Artistic-1 GPL}
+maintainers         {devans @dbevans} openmaintainer
+description         YAML::PP - YAML 1.2 processor
+long_description    {*}${description}
+
+platforms           {darwin any}
+supported_archs     noarch
+
+checksums           rmd160  eab6a45949b4e812ec3346421fcdc9f2f5edd680 \
+                    sha256  32f53c65781277dcbe50827b4cbf217eceeff264779e3a6c98c94229eb149f58 \
+                    size    216796
+
+if {${perl5.major} != ""} {
+    depends_build-append \
+                    port:p${perl5.major}-boolean \
+                    port:p${perl5.major}-test-deep \
+                    port:p${perl5.major}-test-warn
+
+    depends_lib-append \
+                    port:p${perl5.major}-getopt-long
+}
