@@ -104,7 +104,7 @@ ident ( ) {
 
     # extract version from CVS Id string
     __id="$Id$"
-    __version="`echo $__id | sed 's/.*\([0-9][0-9][0-9][0-9]\)[-\/]\([0-9][0-9]\)[-\/]\([0-9][0-9]\).*/\1\2\3/'`"
+    __version="`echo "$__"id | sed 's/.*\([0-9][0-9][0-9][0-9]\)[-\/]\([0-9][0-9]\)[-\/]\([0-9][0-9]\).*/\1\2\3/'`"
     if [ "x$__version" = "x" ] ; then
 	__version=""
     fi
@@ -186,13 +186,13 @@ version_check ( ) {
     _min="`echo ${_min}. | sed 's/[^0-9]/./g' | sed 's/\.\././g'`"
     _cur="`echo ${_cur}. | sed 's/[^0-9]/./g' | sed 's/\.\././g'`"
 
-    _min_major="`echo $_min | cut -d. -f1`"
-    _min_minor="`echo $_min | cut -d. -f2`"
-    _min_patch="`echo $_min | cut -d. -f3`"
+    _min_major="`echo "$_"min | cut -d. -f1`"
+    _min_minor="`echo "$_"min | cut -d. -f2`"
+    _min_patch="`echo "$_"min | cut -d. -f3`"
 
-    _cur_major="`echo $_cur | cut -d. -f1`"
-    _cur_minor="`echo $_cur | cut -d. -f2`"
-    _cur_patch="`echo $_cur | cut -d. -f3`"
+    _cur_major="`echo "$_"cur | cut -d. -f1`"
+    _cur_minor="`echo "$_"cur | cut -d. -f2`"
+    _cur_patch="`echo "$_"cur | cut -d. -f3`"
 
     if [ "x$_min_major" = "x" ] ; then
 	_min_major=0
@@ -405,7 +405,7 @@ fi
 ################################################
 # check for help arg and bypass version checks #
 ################################################
-if [ "x`echo $ARGS | sed 's/.*[hH][eE][lL][pP].*/help/'`" = "xhelp" ] ; then
+if [ "x`echo "$ARGS" | sed 's/.*[hH][eE][lL][pP].*/help/'`" = "xhelp" ] ; then
     HELP=yes
 fi
 if [ "x$HELP" = "xyes" ] ; then

@@ -6,7 +6,7 @@ if [ $TERM = "vt100" ]
 	then
 	t_bold="tput smso"
 	t_norm="tput rmso"
-elif `echo $TERM | grep -q xterm`
+elif `echo "$TERM" | grep -q xterm`
 	then
 	t_bold="tput bold"
 	t_norm="tput sgr0"
@@ -126,7 +126,7 @@ echo
 if [ ! -d $GNUSTEP_USER_ROOT/Library/WindowMaker ]
     then
     echo -n "Installing WindowMaker resources ... "
-    mkdir $GNUSTEP_USER_ROOT
+    mkdir "$GNUSTEP_USER_ROOT"
     wmaker.inst
     echo "Done"
 fi

@@ -270,4 +270,4 @@ $AUTOCONF || exit $?
 intltoolize --automake || exit $?
 
 
-cd $ORIGDIR
+cd "$ORIGDIR"

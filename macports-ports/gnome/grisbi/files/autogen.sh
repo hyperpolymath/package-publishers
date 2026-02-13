@@ -36,7 +36,7 @@ set -e
 for i in config.guess config.sub missing install-sh mkinstalldirs ; do
 	test -r $PATH_AUTOMAKE/${i} && {
 		rm -f ${i}
-		cp $PATH_AUTOMAKE/${i} .
+		cp "$PATH_AUTOMAKE"/${i} .
 	}
 	if test -r ${i} ; then
 	    chmod 755 ${i}

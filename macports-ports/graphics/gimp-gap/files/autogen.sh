@@ -232,7 +232,7 @@ glib-gettextize --force || exit $?
 intltoolize --force --automake || exit $?
 
 
-cd $ORIGDIR
+cd "$ORIGDIR"
 
 $srcdir/configure --enable-maintainer-mode $AUTOGEN_CONFIGURE_ARGS "$@"
 RC=$?

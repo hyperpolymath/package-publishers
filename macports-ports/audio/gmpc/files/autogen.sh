@@ -39,9 +39,9 @@ esac
 boldface="`tput bold 2>/dev/null`"
 normal="`tput sgr0 2>/dev/null`"
 printbold() {
-    echo $ECHO_N "$boldface" $ECHO_C
+    echo "$ECHO_N" "$boldface" $ECHO_C
     echo "$@"
-    echo $ECHO_N "$normal" $ECHO_C
+    echo "$ECHO_N" "$normal" $ECHO_C
 }    
 printerr() {
     echo "$@" >&2
@@ -91,7 +91,7 @@ version_check() {
     fi
     printbold "checking for $vc_package $vc_comparator $vc_min_version..."
     for vc_checkprog in $vc_checkprogs; do
-	echo $ECHO_N "  testing $vc_checkprog... " $ECHO_C
+	echo "$ECHO_N" "  testing $vc_checkprog... " $ECHO_C
 	if $vc_checkprog --version < /dev/null > /dev/null 2>&1; then
 	    vc_actual_version=`$vc_checkprog --version | head -n 1 | \
                                sed 's/^.*[ 	]\([0-9.]*[a-z]*\).*$/\1/'`
@@ -307,7 +307,7 @@ WANT_AUTOCONF_2_5=1
 export WANT_AUTOCONF_2_5
 version_check autoconf AUTOCONF 'autoconf2.50 autoconf autoconf-2.53' $REQUIRED_AUTOCONF_VERSION \
     "http://ftp.gnu.org/pub/gnu/autoconf/autoconf-$REQUIRED_AUTOCONF_VERSION.tar.gz"
-AUTOHEADER=`echo $AUTOCONF | sed s/autoconf/autoheader/`
+AUTOHEADER=`echo "$AUTOCONF" | sed s/autoconf/autoheader/`
 
 case $REQUIRED_AUTOMAKE_VERSION in
     1.4*) automake_progs="automake-1.4" ;;
@@ -326,7 +326,7 @@ case $REQUIRED_AUTOMAKE_VERSION in
 esac
 version_check automake AUTOMAKE "$automake_progs" $REQUIRED_AUTOMAKE_VERSION \
     "http://ftp.gnu.org/pub/gnu/automake/automake-$REQUIRED_AUTOMAKE_VERSION.tar.gz"
-ACLOCAL=`echo $AUTOMAKE | sed s/automake/aclocal/`
+ACLOCAL=`echo "$AUTOMAKE" | sed s/automake/aclocal/`
 
 if $want_libtool; then
     version_check glibtool LIBTOOLIZE glibtoolize $REQUIRED_LIBTOOL_VERSION \

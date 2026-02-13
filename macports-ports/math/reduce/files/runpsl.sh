@@ -11,7 +11,7 @@ esac
 
 MYDIR=`dirname $0`
 export MYDIR
-PSLDIR="$(cd $MYDIR/../libexec/reduce/psl && pwd -P)"
+PSLDIR="$(cd "$MYDIR"/../libexec/reduce/psl && pwd -P)"
 bin="$PSLDIR/psl/bpsl"
 img="$PSLDIR/red/reduce.img"
 
